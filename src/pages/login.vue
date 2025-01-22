@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="6">
         <v-card rounded="xl" class="pa-10 mt-10 gradient" elevation="12">
-          <h1 class="text-center">註冊</h1>
+          <h1 class="text-center">登入</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
               v-model="account.value.value"
@@ -12,16 +12,10 @@
               maxlength="20"
               counter
               :error-messages="account.errorMessage.value"
-              variant="outlined"
               prepend-inner-icon=" mdi-account-plus"
-            />
-            <v-text-field
-              v-model="email.value.value"
-              :error-messages="email.errorMessage.value"
-              label="信箱"
-              prepend-inner-icon="mdi-email-outline"
               variant="outlined"
             />
+
             <v-text-field
               v-model="password.value.value"
               type="password"
@@ -34,16 +28,8 @@
               variant="outlined"
             />
 
-            <v-text-field
-              v-model="passwordConfirm.value.value"
-              type="password"
-              :error-messages="passwordConfirm.errorMessage.value"
-              label="確認密碼"
-              variant="outlined"
-            />
-            <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5"> 註冊</v-btn>
+            <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5">登入</v-btn>
           </v-form>
-          <p class="mt-5" @click="login">已經有帳號了?</p>
         </v-card>
       </v-col>
       <v-col cols="6">
@@ -62,10 +48,12 @@ import * as yup from 'yup'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
 
 const { api } = useAxios()
 const router = useRouter()
 const createSnackbar = useSnackbar()
+const user = useUserStore()
 
 const schema = yup.object({
   account: yup
@@ -74,16 +62,11 @@ const schema = yup.object({
     .min(4, '使用者帳號太短')
     .max(20, '使用者帳號太長')
     .test('isAlphanumeric', '帳號格式不符', (value) => validator.isAlphanumeric(value)),
-  email: yup
-    .string()
-    .required('使用者信箱必填')
-    .test('isEmail', '使用者信箱格式不符', (value) => validator.isEmail(value)),
   password: yup
     .string()
     .required('使用者密碼必填')
     .min(4, '使用者密碼太短')
     .max(20, '使用者密碼太長'),
-  passwordConfirm: yup.string().oneOf([yup.ref('password')], '密碼不一致'),
 })
 
 const { handleSubmit, isSubmitting } = useForm({
@@ -91,24 +74,22 @@ const { handleSubmit, isSubmitting } = useForm({
 })
 
 const account = useField('account')
-const email = useField('email')
 const password = useField('password')
-const passwordConfirm = useField('passwordConfirm')
 
 const submit = handleSubmit(async (values) => {
   try {
-    await api.post('/user', {
+    const { data } = await api.post('/user/login', {
       account: values.account,
-      email: values.email,
       password: values.password,
     })
+    user.login(data.result)
     createSnackbar({
-      text: '註冊成功',
+      text: '登入成功',
       snackbarProps: {
         color: 'info',
       },
     })
-    router.push('/login')
+    router.push('/')
   } catch (error) {
     console.log('pages.register.submit:', error)
     createSnackbar({
@@ -119,10 +100,6 @@ const submit = handleSubmit(async (values) => {
     })
   }
 })
-
-const login = () => {
-  router.push('/login')
-}
 </script>
 
 <style>
