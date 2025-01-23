@@ -10,9 +10,14 @@
         <template #activator="{ props }">
           <v-btn v-bind="props"> <v-icon left>mdi-account-circle</v-icon></v-btn>
         </template>
-        <v-list>
-          <v-list-item v-for="user of users" :key="user.to" :to="user.to" :prepend-icon="user.icon">
-            <v-list-item-title>{{ user.text }}</v-list-item-title>
+        <v-list rounded="xl" class="pa-2">
+          <template v-for="user of users" :key="user.to">
+            <v-list-item v-if="user.show" rounded="xl" :to="user.to" :prepend-icon="user.icon">
+              <v-list-item-title>{{ user.text }}</v-list-item-title>
+            </v-list-item>
+          </template>
+          <v-list-item v-if="userstore.isLoggedIn" prepend-icon="mdi-logout" @click="logout">
+            <v-list-item-title>登出</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -26,6 +31,13 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useUserStore } from '@/stores/user'
+import { useAxios } from '@/composables/axios'
+import { useSnackbar } from 'vuetify-use-dialog'
+
+const userstore = useUserStore()
+const { apiAuth } = useAxios()
+const createSnackbar = useSnackbar()
 
 const navs = computed(() => {
   return [
@@ -37,10 +49,32 @@ const navs = computed(() => {
 
 const users = computed(() => {
   return [
-    { to: '/register', text: '註冊', icon: 'mdi-account-plus' },
-    { to: '/login', text: '登入', icon: 'mdi-login' },
+    { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !userstore.isLoggedIn },
+    { to: '/login', text: '登入', icon: 'mdi-login', show: !userstore.isLoggedIn },
+    { to: '/member', text: '個人頁面', icon: 'mdi-account-details', show: userstore.isLoggedIn },
+    {
+      to: '/admin',
+      text: '管理員頁面',
+      icon: 'mdi-account-cog',
+      show: userstore.isLoggedIn && userstore.isAdmin,
+    },
   ]
 })
+
+const logout = async () => {
+  try {
+    await apiAuth.delete('/user/logout')
+  } catch (error) {
+    console.log('Layout.default.logout', error)
+  }
+  userstore.logout()
+  createSnackbar({
+    text: '已成功登出',
+    snackbarProps: {
+      color: 'blue',
+    },
+  })
+}
 </script>
 
 <style>
