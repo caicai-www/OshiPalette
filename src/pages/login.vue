@@ -111,3 +111,8 @@ const submit = handleSubmit(async (values) => {
   color: rgb(134, 128, 119);
 }
 </style>
+
+<route lang="yaml">
+meta:
+  title: '登入'
+</route>

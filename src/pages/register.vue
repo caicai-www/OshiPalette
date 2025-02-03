@@ -134,3 +134,8 @@ const login = () => {
   color: rgb(134, 128, 119);
 }
 </style>
+
+<route lang="yaml">
+meta:
+  title: '註冊'
+</route>

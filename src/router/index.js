@@ -28,7 +28,20 @@ router.beforeEach(async (to, from, next) => {
       user.logout()
     }
   }
-  next()
+  // 擋路由
+  if (user.isLoggedIn && ['/login', '/register'].includes(to.path)) {
+    next({ path: '/' })
+  } else if (to.meta.login && !user.isLoggedIn) {
+    next('login')
+  } else if (to.meta.login && !user.isAdmin) {
+    next('/')
+  } else {
+    next()
+  }
+})
+
+router.afterEach((to) => {
+  document.title = to.meta.title + ' | Oshi Palette'
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

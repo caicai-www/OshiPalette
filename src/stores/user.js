@@ -11,6 +11,7 @@ export const useUserStore = defineStore(
 
     const token = ref('')
     const account = ref('')
+    const icon = ref('')
     const role = ref(UserRole.USER)
 
     const isLoggedIn = computed(() => {
@@ -39,6 +40,7 @@ export const useUserStore = defineStore(
       token,
       account,
       role,
+      icon,
       isLoggedIn,
       isAdmin,
       login,
