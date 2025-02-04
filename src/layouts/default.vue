@@ -51,7 +51,7 @@ const users = computed(() => {
   return [
     { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !userstore.isLoggedIn },
     { to: '/login', text: '登入', icon: 'mdi-login', show: !userstore.isLoggedIn },
-    { to: '/member', text: '個人頁面', icon: 'mdi-account-details', show: userstore.isLoggedIn },
+    { to: '/user', text: '個人頁面', icon: 'mdi-account-details', show: userstore.isLoggedIn },
     {
       to: '/admin',
       text: '管理員頁面',

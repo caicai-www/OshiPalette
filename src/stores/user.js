@@ -3,6 +3,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import UserRole from '@/enums/UserRole'
 import { useAxios } from '@/composables/axios'
+import avatar from 'animal-avatar-generator'
 
 export const useUserStore = defineStore(
   'user',
@@ -20,6 +21,10 @@ export const useUserStore = defineStore(
 
     const isAdmin = computed(() => {
       return role.value === UserRole.ADMIN
+    })
+
+    const avatarSvg = computed(() => {
+      return avatar(account.value, { size: 50 })
     })
 
     const login = (data) => {
@@ -45,6 +50,7 @@ export const useUserStore = defineStore(
       isAdmin,
       login,
       logout,
+      avatarSvg,
     }
   },
   {

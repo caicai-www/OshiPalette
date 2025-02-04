@@ -26,12 +26,10 @@ import { useUserStore } from '@/stores/user'
 const user = useUserStore()
 const navs = computed(() => {
   return [
-    { to: '/admin/user', text: '會員管理', icon: 'mdi-file-account' },
-    { to: '/admin/post', text: '會員文章管理', icon: ' mdi-basket' },
-    { to: '/admin/calendar', text: '月曆活動管理', icon: 'mdi-calendar-edit' },
+    { to: '/user', text: '個人資料', icon: 'mdi-badge-account' },
+    { to: '/user/oshigram', text: '我的照片牆/收藏', icon: ' mdi-image-album' },
+    { to: '/user/calendar', text: '我的活動月曆', icon: 'mdi-calendar-account' },
     { to: '/', text: '回首頁', icon: 'mdi-home' },
   ]
 })
-
-// console.log(user.avatarSvg)
 </script>
