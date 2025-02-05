@@ -112,9 +112,9 @@ const dialog = ref({
 })
 
 const schema = yup.object({
-  account: yup.string().required(),
-  email: yup.string().required(),
-  name: yup.string().required(),
+  account: yup.string(),
+  email: yup.string(),
+  name: yup.string(),
   birthdate: yup.date(),
   icon: yup.string(),
   post: yup.boolean(),
@@ -123,6 +123,14 @@ const schema = yup.object({
 
 const { handleSubmit, isSubmitting, resetForm } = useForm({
   validationSchema: schema,
+  initialValues: {
+    account: '',
+    email:'',
+    name: '',
+    birthdate:'',
+    post: true,
+    reply: true,
+  }
 })
 const account = useField('account')
 const email = useField('email')
@@ -149,21 +157,23 @@ const closeDialog = () => {
   dialog.value.open = false
 }
 
-const submit = async (values) => {
+const submit =  handleSubmit(async (values) => {
+
   try {
     const fd = new FormData()
     fd.append('post', values.post)
     fd.append('reply', values.reply)
 
-    console.log(post.value.value, typeof post.value.value)
-    console.log(reply.value.value, typeof reply.value.value)
+    // console.log('🚀 發送前 post:', values.post, typeof values.post)
+    // console.log('🚀 發送前 reply:', values.reply, typeof values.reply)
+    // console.log('📤 發送資料:', Object.fromEntries(fd.entries()))
+   
 
-    // console.log('發送資料:', Object.fromEntries(fd.entries()))
-
-    await apiAuth.patch('user/profile/' + dialog.value.id, fd)
+    await apiAuth.patch('user/' + dialog.value.id, fd)
 
     users.splice(0, users.length)
     getUsers()
+    console.log('發送資料:', Object.fromEntries(fd.entries()))
     closeDialog()
     createSnackbar({
       text: '編輯成功',
@@ -180,7 +190,7 @@ const submit = async (values) => {
       },
     })
   }
-}
+})
 
 const getUsers = async () => {
   try {
