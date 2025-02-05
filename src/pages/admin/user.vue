@@ -58,9 +58,18 @@
           <v-text-field v-model="email.value.value" label="信箱" readonly> </v-text-field>
           <v-text-field v-model="name.value.value" label="暱稱" readonly> </v-text-field>
           <v-text-field v-model="birthdate.value.value" label="生日" readonly> </v-text-field>
-          <v-text-field v-model="icon.value.value" label="頭像" readonly> </v-text-field>
-          <v-checkbox v-model="post.value.value" label="發文"></v-checkbox>
-          <v-checkbox v-model="reply.value.value" label="回覆"></v-checkbox>
+          <v-checkbox
+            v-model="post.value.value"
+            label="發文"
+            :true-value="true"
+            :false-value="false"
+          ></v-checkbox>
+          <v-checkbox
+            v-model="reply.value.value"
+            label="回覆"
+            :true-value="true"
+            :false-value="false"
+          ></v-checkbox>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="closeDialog">取消編輯</v-btn>
@@ -119,7 +128,6 @@ const account = useField('account')
 const email = useField('email')
 const name = useField('name')
 const birthdate = useField('birthdate')
-const icon = useField('icon')
 const post = useField('post')
 const reply = useField('reply')
 
@@ -130,7 +138,6 @@ const openDialog = (item) => {
     email.value.value = item.email
     name.value.value = item.name
     birthdate.value.value = item.birthdate
-    icon.value.value = item.icon
     post.value.value = item.post
     reply.value.value = item.reply
   }
@@ -148,20 +155,22 @@ const submit = async (values) => {
     fd.append('post', values.post)
     fd.append('reply', values.reply)
 
-    console.log('發送資料:', Object.fromEntries(fd.entries()))
+    console.log(post.value.value, typeof post.value.value)
+    console.log(reply.value.value, typeof reply.value.value)
 
-    await apiAuth.patch('/user/' + dialog.value.id, fd)
+    // console.log('發送資料:', Object.fromEntries(fd.entries()))
+
+    await apiAuth.patch('user/profile/' + dialog.value.id, fd)
 
     users.splice(0, users.length)
     getUsers()
-
+    closeDialog()
     createSnackbar({
       text: '編輯成功',
       snackbarProps: {
         color: 'blue',
       },
     })
-    closeDialog()
   } catch (error) {
     console.log('page.user.submit:', error)
     createSnackbar({
