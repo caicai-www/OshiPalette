@@ -9,10 +9,12 @@ export const useUserStore = defineStore(
   'user',
   () => {
     const { api } = useAxios()
-
     const token = ref('')
     const account = ref('')
-    const icon = ref('')
+    const id = ref('')
+    // const name = ref('')
+    // const birthdate = ref('')
+    // const icon = ref('')
     const role = ref(UserRole.USER)
 
     const isLoggedIn = computed(() => {
@@ -32,12 +34,15 @@ export const useUserStore = defineStore(
         token.value = data.token
       }
       account.value = data.account
+      id.value = data.id
+      // birthdate.value = data.birthdate
       role.value = data.role
     }
 
     const logout = () => {
       token.value = ''
       account.value = ''
+      id.value = ''
       role.value = UserRole.USER
     }
 
@@ -45,7 +50,7 @@ export const useUserStore = defineStore(
       token,
       account,
       role,
-      icon,
+      id,
       isLoggedIn,
       isAdmin,
       login,

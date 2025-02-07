@@ -33,7 +33,7 @@ router.beforeEach(async (to, from, next) => {
     next({ path: '/' })
   } else if (to.meta.login && !user.isLoggedIn) {
     next('login')
-  } else if (to.meta.login && !user.isAdmin) {
+  } else if (to.meta.adminOnly && !user.isAdmin) {
     next('/')
   } else {
     next()

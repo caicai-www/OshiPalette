@@ -6,7 +6,12 @@
       </v-col>
       <v-divider></v-divider>
       <v-col cols="12">
-        <v-data-table :items="users" :headers="headers" :search="search" :filter-keys="['account']">
+        <v-data-table
+          :items="users"
+          :headers="headers"
+          :search="search"
+          :filter-keys="['account' && 'name']"
+        >
           <template #top>
             <v-toolbar>
               <v-text-field
@@ -14,7 +19,7 @@
                 variant="underlined"
                 class="pa-2 my-auto"
                 density="comfortable"
-                placeholder="搜尋會員名稱..."
+                placeholder="搜尋會員帳號、名稱..."
                 prepend-icon="mdi-account-search"
               ></v-text-field>
             </v-toolbar>
@@ -125,12 +130,12 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
   validationSchema: schema,
   initialValues: {
     account: '',
-    email:'',
+    email: '',
     name: '',
-    birthdate:'',
+    birthdate: '',
     post: true,
     reply: true,
-  }
+  },
 })
 const account = useField('account')
 const email = useField('email')
@@ -157,8 +162,7 @@ const closeDialog = () => {
   dialog.value.open = false
 }
 
-const submit =  handleSubmit(async (values) => {
-
+const submit = handleSubmit(async (values) => {
   try {
     const fd = new FormData()
     fd.append('post', values.post)
@@ -167,7 +171,6 @@ const submit =  handleSubmit(async (values) => {
     // console.log('🚀 發送前 post:', values.post, typeof values.post)
     // console.log('🚀 發送前 reply:', values.reply, typeof values.reply)
     // console.log('📤 發送資料:', Object.fromEntries(fd.entries()))
-   
 
     await apiAuth.patch('user/' + dialog.value.id, fd)
 
