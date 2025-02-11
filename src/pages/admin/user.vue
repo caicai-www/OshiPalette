@@ -10,7 +10,7 @@
           :items="users"
           :headers="headers"
           :search="search"
-          :filter-keys="['account' && 'name']"
+          :filter-keys="['account' || 'name']"
         >
           <template #top>
             <v-toolbar>

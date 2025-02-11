@@ -11,6 +11,8 @@ const apiAuth = axios.create({
 
 apiAuth.interceptors.request.use((config) => {
   const user = useUserStore()
+  // console.log('🚀 Axios Request Headers:', config.headers) // 檢查標頭
+  // console.log('🚀 Token in Store:', user.token) // 檢查 token 是否存在
   config.headers.Authorization = 'Bearer ' + user.token
   return config
 })

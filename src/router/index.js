@@ -19,6 +19,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const { apiAuth } = useAxios()
   const user = useUserStore()
+  // console.log('🔄 BeforeEach Token:', user.token)
   if (from === START_LOCATION && user.isLoggedIn) {
     try {
       const { data } = await apiAuth.get('/user/profile')
