@@ -1,0 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Kiwi+Maru&family=LXGW+WenKai+Mono+TC&display=swap');
+
+body {
+  font-family: 'Kiwi Maru', 'LXGW WenKai Mono TC', sans-serif;
+}
+
+.bg {
+  background: url('@/assets/bg.jpg'),
+    linear-gradient(130deg, hsl(0, 100%, 83%), #f9a8d4, #decfff, #cff9ff, #b9ffb3, #fffcaf, #ffbf95);
+  background-position: center;
+
+  background-origin: padding-box;
+  background-blend-mode: hard-light;
+}

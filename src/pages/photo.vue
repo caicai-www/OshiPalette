@@ -20,7 +20,6 @@
 </template>
 
 <script setup>
-import Masonry from 'vue-masonry-css'
 import { ref } from 'vue'
 import { useAxios } from '@/composables/axios'
 import PostCard from '@/components/PostCard.vue'

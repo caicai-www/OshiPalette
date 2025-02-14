@@ -10,7 +10,7 @@
           :items="users"
           :headers="headers"
           :search="search"
-          :filter-keys="['account' || 'name']"
+          :filter-keys="['account', 'name']"
         >
           <template #top>
             <v-toolbar>
@@ -24,7 +24,7 @@
               ></v-text-field>
             </v-toolbar>
           </template>
-          <template #[`item.icon`]="{ value }">
+          <template #[`item.image`]="{ value }">
             <v-img :src="value" height="50"></v-img>
           </template>
 
@@ -98,7 +98,7 @@ const createSnackbar = useSnackbar()
 const users = reactive([])
 const headers = computed(() => {
   return [
-    { title: '頭像', key: 'icon', sortable: false },
+    { title: '頭像', key: 'image', sortable: false },
     { title: 'ID', key: '_id', sortable: true },
     { title: '會員帳號', key: 'account', sortable: true },
     { title: '會員名稱', key: 'name', sortable: true },
@@ -121,7 +121,7 @@ const schema = yup.object({
   email: yup.string(),
   name: yup.string(),
   birthdate: yup.date(),
-  icon: yup.string(),
+  image: yup.string(),
   post: yup.boolean(),
   reply: yup.boolean(),
 })
@@ -212,6 +212,8 @@ const getUsers = async () => {
 
 getUsers()
 </script>
+
+<style scoped></style>
 
 <route lang="yaml">
 meta:

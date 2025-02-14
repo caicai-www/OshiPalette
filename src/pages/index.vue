@@ -1,8 +1,10 @@
-<template>首頁 INDEX</template>
+<template>
+  <v-banner class="banner w-100 h-100"> 首頁 INDEX</v-banner>
+</template>
 
 <style>
-body {
-  color: #000;
+.banner {
+  background: url('@/assets/banner.png') center center;
 }
 </style>
 

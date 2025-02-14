@@ -128,7 +128,7 @@
             :error-messages="tags.errorMessage.value ? [tags.errorMessage.value] : []"
             :custom-filter="filter"
             :items="items"
-            label="新增標籤"
+            label="標籤"
             variant="solo"
             hide-selected
             multiple
@@ -252,7 +252,6 @@ const tabs = computed(() => {
 })
 
 // 取資料
-// 要改成會員自己的post
 const getPost = async () => {
   try {
     const { data } = await apiAuth.get('/post')
@@ -355,7 +354,7 @@ const submit = handleSubmit(async (values) => {
     })
     // console.log(values.tags)
     // console.log(tags.value.value)
-    console.log(user.id)
+    // console.log(user.id)
 
     if (fileRecords.value.length > 0) {
       fd.append('image', fileRecords.value[0].file)
