@@ -2,7 +2,12 @@
   <v-container>
     <v-row>
       <v-col cols="6">
-        <v-card rounded="xl" class="pa-10 mt-10 gradient" elevation="12">
+        <v-card rounded="xl" class="pa-10 mt-10 gradient">
+          <h1>testtttttttt</h1>
+        </v-card>
+      </v-col>
+      <v-col cols="6">
+        <v-card  class="pa-10 mt-10 bg" elevation="12">
           <h1 class="text-center">登入</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
@@ -30,13 +35,10 @@
 
             <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5">登入</v-btn>
           </v-form>
+            <p class="mt-5" @click="toRegister">還沒有帳號?</p>
         </v-card>
       </v-col>
-      <v-col cols="6">
-        <v-card rounded="xl" class="pa-10 mt-10 gradient">
-          <h1>testtttttttt</h1>
-        </v-card>
-      </v-col>
+
     </v-row>
   </v-container>
 </template>
@@ -100,9 +102,21 @@ const submit = handleSubmit(async (values) => {
     })
   }
 })
+
+const toRegister = () => {
+  router.push('/register')
+}
 </script>
 
 <style>
+.bg{
+  padding: 40px;
+  border-radius:  10% 40% / 50% 20% ;
+  text-align: center;
+}
+
+
+
 .gradient {
   background: linear-gradient(30deg, #decfff, #decfff00 80%),
     linear-gradient(157deg, #cff9ff, #cff9ff00 80%),

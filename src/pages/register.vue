@@ -1,9 +1,10 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="6">
-        <v-card rounded="xl" class="pa-10 mt-10 gradient" elevation="12">
-          <h1 class="text-center">註冊</h1>
+
+        <v-card class="pa-10 mt-10 reg-log-bg" elevation="12">
+          <v-row>
+            <v-col cols="12" md="7" class="bg-info"></v-col>
+            <v-col cols="12" md="5">  <h1 class="text-center">註冊</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
               v-model="account.value.value"
@@ -43,15 +44,11 @@
             />
             <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5"> 註冊</v-btn>
           </v-form>
-          <p class="mt-5" @click="login">已經有帳號了?</p>
+          <p class="mt-5" @click="toLogin">已經有帳號了?</p></v-col>
+          </v-row>
+
         </v-card>
-      </v-col>
-      <v-col cols="6">
-        <v-card rounded="xl" class="pa-10 mt-10 gradient">
-          <h1>testtttttttt</h1>
-        </v-card>
-      </v-col>
-    </v-row>
+
   </v-container>
 </template>
 
@@ -120,12 +117,23 @@ const submit = handleSubmit(async (values) => {
   }
 })
 
-const login = () => {
+const toLogin = () => {
   router.push('/login')
 }
 </script>
 
 <style>
+.reg-log-bg{
+  border-radius: 50% 20% / 10% 40%;
+  background: white;
+  padding: 20px;
+  text-align: center;
+  position: relative;
+  /* border: 10px solid transparent;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  border-image: url('@/assets/bg.jpg') 30 round; */
+}
+
 .gradient {
   background: linear-gradient(30deg, #decfff, #decfff00 80%),
     linear-gradient(157deg, #cff9ff, #cff9ff00 80%),
