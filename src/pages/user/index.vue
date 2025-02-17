@@ -32,7 +32,7 @@
                 v-model="birthdate.value.value"
                 type="date"
                 label="生日"
-                :error-messages="name.errorMessage.value"
+                :error-messages="birthdate.errorMessage.value"
               >
                 <template #append> <v-icon class="cursor-pointer"> </v-icon> </template>
               </v-text-field>

@@ -36,6 +36,11 @@
       <v-tabs-window-item value="collection">
         <v-card>
           <v-card-text>這是收藏頁面的內容</v-card-text>
+          <v-row class="mt-5">
+            <v-col v-for="favorite in favorites" :key="favorite._id" cols="12" md="4" lg="3">
+              <post-card v-bind="favorite.post"></post-card>
+            </v-col>
+          </v-row>
         </v-card>
       </v-tabs-window-item>
     </v-tabs-window>
@@ -251,6 +256,7 @@ const tabs = computed(() => {
   ]
 })
 
+// 貼文區
 // 取資料
 const getPost = async () => {
   try {
@@ -382,6 +388,21 @@ const submit = handleSubmit(async (values) => {
     })
   }
 })
+
+// 收藏區
+const favorites = ref([])
+
+const getFavorite = async () => {
+  try {
+    const { data } = await apiAuth.get('user/favorites')
+    favorites.value = data.result
+    console.log(favorites)
+  } catch (error) {
+    console.log('pages.user.oshigram.getFavorite', error)
+  }
+}
+
+getFavorite()
 </script>
 
 <route lang="yaml">

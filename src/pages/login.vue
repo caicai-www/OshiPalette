@@ -7,7 +7,7 @@
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card  class="pa-10 mt-10 bg" elevation="12">
+        <v-card class="pa-10 mt-10 bg" elevation="12">
           <h1 class="text-center">登入</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
@@ -35,10 +35,9 @@
 
             <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5">登入</v-btn>
           </v-form>
-            <p class="mt-5" @click="toRegister">還沒有帳號?</p>
+          <p class="mt-5" @click="toRegister">還沒有帳號?</p>
         </v-card>
       </v-col>
-
     </v-row>
   </v-container>
 </template>
@@ -108,14 +107,12 @@ const toRegister = () => {
 }
 </script>
 
-<style>
-.bg{
+<style scoped>
+.bg {
   padding: 40px;
-  border-radius:  10% 40% / 50% 20% ;
+  border-radius: 10% 40% / 50% 20%;
   text-align: center;
 }
-
-
 
 .gradient {
   background: linear-gradient(30deg, #decfff, #decfff00 80%),

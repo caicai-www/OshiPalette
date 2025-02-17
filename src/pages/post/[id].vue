@@ -21,6 +21,13 @@
               <h2 class="ma-2">{{ post.title }}</h2>
               <p class="ma-2">{{ post.content }}</p>
               <v-chip v-for="tag in post.tags" :key="tag" class="ma-2">{{ tag }}</v-chip>
+              <!--  新增收藏 -->
+              <v-btn
+                :color="isFavorite ? 'red' : 'grey'"
+                prepend-icon="mdi-heart-plus"
+                @click="addFavorite"
+                >新增至我的收藏</v-btn
+              >
             </v-col>
           </v-row>
           <v-divider></v-divider>
@@ -81,14 +88,12 @@ const post = ref({
   colors: '',
 })
 
-const replys = ref([])
-
 const getPost = async () => {
   try {
     const { data } = await api.get('/post/' + route.params.id)
     post.value = data.result
-    console.log('user._id:', user.id)
-    console.log('post._id:', post.value._id)
+    // console.log('user._id:', user.id)
+    // console.log('post._id:', post.value._id)
   } catch (error) {
     console.log('pages.[id].post:', error)
     router.push('/')
@@ -142,6 +147,9 @@ const submit = handleSubmit(async (values) => {
   }
 })
 
+// 回覆區
+const replys = ref([])
+
 const getReply = async () => {
   try {
     const { data } = await api.get('/postReply', {
@@ -151,8 +159,8 @@ const getReply = async () => {
     })
 
     replys.value = data.result
-
-    console.log('reply:', replys.value)
+    getReply()
+    // console.log('reply:', replys.value)
   } catch (error) {
     console.log('pages.[id].post:', error)
     createSnackbar({
@@ -165,6 +173,56 @@ const getReply = async () => {
 }
 
 getReply()
+
+// 收藏區
+
+const addFavorite = async () => {
+  if (!user.isLoggedIn) {
+    createSnackbar({
+      text: '尚未登入，請先登入',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    router.push('/login')
+    return
+  }
+
+  // 確認是否有收藏過
+  const favoritePostIds = user.favorite?.map((fav) => fav.post) || []
+
+  if (favoritePostIds.includes(post.value._id)) {
+    createSnackbar({
+      text: '此篇貼文已經收藏了!',
+      snackbarProps: { color: 'red' },
+    })
+    return
+  }
+
+  try {
+    const { data } = await apiAuth.patch('user/favorites', {
+      post: post.value._id,
+    })
+
+    user.favorite = data.result
+    console.log(user.favorite)
+
+    createSnackbar({
+      text: '收藏成功',
+      snackbarProps: {
+        color: 'info',
+      },
+    })
+  } catch (error) {
+    console.log('pages.post.[id].addFavorite:', error)
+    createSnackbar({
+      text: error?.response?.data?.message || '未知錯誤',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+}
 </script>
 
 <route lang="yaml">

@@ -28,7 +28,7 @@ const navs = computed(() => {
   return [
     { to: '/admin/user', text: '會員管理', icon: 'mdi-file-account' },
     { to: '/admin/post', text: '會員文章管理', icon: ' mdi-basket' },
-    { to: '/admin/calendar', text: '月曆活動管理', icon: 'mdi-calendar-edit' },
+    { to: '/admin/calendar', text: '活動月曆管理', icon: 'mdi-calendar-edit' },
     { to: '/', text: '回首頁', icon: 'mdi-home' },
   ]
 })

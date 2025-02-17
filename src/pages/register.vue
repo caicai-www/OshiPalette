@@ -1,10 +1,10 @@
 <template>
   <v-container>
-
-        <v-card class="pa-10 mt-10 reg-log-bg" elevation="12">
-          <v-row>
-            <v-col cols="12" md="7" class="bg-info"></v-col>
-            <v-col cols="12" md="5">  <h1 class="text-center">註冊</h1>
+    <v-card class="pa-10 mt-10 reg-log-bg" elevation="12">
+      <v-row class="gradient">
+        <v-col cols="12" md="7"></v-col>
+        <v-col cols="12" md="5" class="bg-info my-0">
+          <h1 class="text-center">註冊</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
               v-model="account.value.value"
@@ -44,11 +44,10 @@
             />
             <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5"> 註冊</v-btn>
           </v-form>
-          <p class="mt-5" @click="toLogin">已經有帳號了?</p></v-col>
-          </v-row>
-
-        </v-card>
-
+          <p class="mt-5" @click="toLogin">已經有帳號了?</p></v-col
+        >
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
@@ -122,10 +121,10 @@ const toLogin = () => {
 }
 </script>
 
-<style>
-.reg-log-bg{
+<style scoped>
+.reg-log-bg {
   border-radius: 50% 20% / 10% 40%;
-  background: white;
+  background: plum;
   padding: 20px;
   text-align: center;
   position: relative;

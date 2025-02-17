@@ -1,6 +1,6 @@
 <template>
   <router-link :to="'/post/' + _id">
-    <v-card :style="{ border: `1px solid ${colors}` }" class="mx-auto">
+    <v-card :style="{ border: `1px solid ${colors}` }" class="mx-auto" height="100%">
       <v-img :src="image" cover class="mx-5 mt-7 mb-2 polaroid"></v-img>
       <v-card-title>{{ title }}</v-card-title>
       <v-chip v-for="tag in tags" :key="tag" class="ma-2">{{ tag }}</v-chip>

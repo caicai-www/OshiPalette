@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <vue-cal
-      selected-date="2019-02-11"
+      :selected-date="today"
       :time-from="7 * 60"
       :disable-views="['years', 'year', 'week', 'day']"
       :show-all-day-events="true"
@@ -16,26 +16,41 @@
 // https://antoniandre.github.io/vue-cal-v4/
 
 import VueCal from 'vue-cal'
-import 'vue-cal/dist/vuecal.css'
+import { ref } from 'vue'
+import { useAxios } from '@/composables/axios'
+import { useSnackbar } from 'vuetify-use-dialog'
 
-const events = [
-  {
-    start: '2019-02-12',
-    end: '2019-02-12',
-    title: 'Day off!',
-    content: '<i class="icon material-icons">beach_access</i>',
-    class: 'yellow-event',
-    allDay: true,
-  },
-  {
-    start: '2019-02-14',
-    end: '2019-02-14',
-    title: "Valentine's day",
-    content: '<i class="icon material-icons">favorite_outline</i>',
-    class: 'pink-event',
-    allDay: true,
-  },
-]
+const { api } = useAxios()
+const createSnackbar = useSnackbar()
+
+const today = new Date()
+
+const events = ref([])
+
+const getEvent = async () => {
+  try {
+    const { data } = await api.get('/calendar')
+    events.value = data.result.map((event) => ({
+      start: new Date(event.start).toISOString().split('T')[0],
+      end: new Date(event.end).toISOString().split('T')[0],
+      title: event.title, // 事件標題
+      description: event.description, // 事件描述
+      location: event.location, // 事件地點
+      allDay: event.allDay, // 是否為全天事件
+    }))
+    // console.log(events.value)
+  } catch (error) {
+    console.log('components.eventCalendar:', error)
+    createSnackbar({
+      text: error?.response?.data?.message || '未知錯誤',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+}
+
+getEvent()
 </script>
 
 <style scoped>
