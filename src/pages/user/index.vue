@@ -115,7 +115,7 @@ const getIdInfo = async () => {
       image: data.result.image,
     }
 
-    console.log(originalData.value)
+    // console.log(originalData.value)
   } catch (error) {
     console.log(error)
     createSnackbar({

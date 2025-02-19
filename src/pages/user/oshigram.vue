@@ -9,13 +9,10 @@
     <v-tabs-window v-model="currentTab">
       <!-- 照片頁面-->
       <v-tabs-window-item value="photo">
-        <v-card>
-          <v-card-text>這是照片頁面的內容</v-card-text>
-        </v-card>
         <v-container>
           <v-toolbar>
             <v-row>
-              <v-col cols="12" md="1" class="bg-warning">
+              <v-col cols="12" md="1">
                 <v-btn variant="outlined" @click="openDialog(null)">新增貼文</v-btn>
               </v-col>
               <v-col cols="12" md="10">
@@ -89,7 +86,7 @@
             item-title="text"
           >
             <template #selection="{ item }">
-              <v-chip :color="item.value" dark>
+              <v-chip :color="item.value">
                 <v-avatar left>
                   <span
                     :style="{
@@ -230,6 +227,15 @@ const dialog = ref({
 })
 
 const openDialog = (item) => {
+  if (!user.post) {
+    createSnackbar({
+      text: '無發文權限',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    return
+  }
   if (item) {
     dialog.value.id = item._id
     title.value.value = item.title
@@ -396,7 +402,7 @@ const getFavorite = async () => {
   try {
     const { data } = await apiAuth.get('user/favorites')
     favorites.value = data.result
-    console.log(favorites)
+    // console.log(favorites)
   } catch (error) {
     console.log('pages.user.oshigram.getFavorite', error)
   }

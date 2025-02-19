@@ -12,15 +12,18 @@
   "dependencies": {
     "@boindil/vue-file-agent-next": "^1.0.5",
     "@mdi/font": "7.4.47",
+    "@tsparticles/vue3": "^3.0.1",
     "animal-avatar-generator": "^1.2.0",
     "axios": "^1.7.9",
     "pinia-plugin-persistedstate": "^4.2.0",
     "roboto-fontface": "*",
+    "tsparticles": "^3.8.1",
     "validator": "^13.12.0",
     "vee-validate": "^4.15.0",
     "vue": "^3.4.31",
     "vue-cal": "^4.10.2",
     "vue-masonry-css": "^1.0.3",
+    "vue3-particles": "^2.12.0",
     "vuetify": "^3.6.14",
     "vuetify-use-dialog": "^0.6.11",
     "yup": "^1.6.1"

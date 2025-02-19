@@ -8,7 +8,6 @@
 import EventCalendar from '@/components/EventCalendar.vue'
 </script>
 
-
 <route lang="yaml">
 meta:
   login: false

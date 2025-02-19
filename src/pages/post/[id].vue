@@ -119,6 +119,27 @@ const { handleSubmit, isSubmitting, resetForm } = useForm({
 const content = useField('content')
 
 const submit = handleSubmit(async (values) => {
+  if (!user.isLoggedIn) {
+    createSnackbar({
+      text: '尚未登入，請先登入才能回覆',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    router.push('/login') // 導向登入頁
+    return
+  }
+
+  if (!user.reply) {
+    createSnackbar({
+      text: '無留言權限',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    return
+  }
+
   try {
     const fd = new FormData()
     fd.append('user', user.id)
@@ -135,9 +156,10 @@ const submit = handleSubmit(async (values) => {
         color: 'green',
       },
     })
+    getReply()
   } catch (error) {
     console.log('pages.post.[id]:', error)
-
+    // 沒登入的話要顯示請先登入
     createSnackbar({
       text: '回覆失敗',
       snackbarProps: {
@@ -159,7 +181,7 @@ const getReply = async () => {
     })
 
     replys.value = data.result
-    getReply()
+
     // console.log('reply:', replys.value)
   } catch (error) {
     console.log('pages.[id].post:', error)

@@ -10,7 +10,9 @@ import pinia from '@/stores'
 import router from '@/router'
 import VuetifyUseDialog from 'vuetify-use-dialog'
 import VueFileAgentNext from '@boindil/vue-file-agent-next'
-import 'vue-cal/dist/vuecal.css'
+
+import Particles from '@tsparticles/vue3'
+import { loadSlim } from '@tsparticles/slim'
 
 import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
 
@@ -22,6 +24,11 @@ export function registerPlugins(app) {
     .use(vuetify)
     .use(router)
     .use(pinia)
+    .use(Particles, {
+      init: async (engine) => {
+        await loadSlim(engine)
+      },
+    })
     .use(VueFileAgentNext)
     .use(VuetifyUseDialog, {
       snackbar: {

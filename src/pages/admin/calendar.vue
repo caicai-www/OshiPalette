@@ -85,13 +85,21 @@
             :error-messages="title.errorMessage.value"
           >
           </v-text-field>
-          <v-text-field
+
+          <v-combobox
             v-model="location.value.value"
-            type="text"
             label="活動地點"
+            :items="[
+              '台北小巨蛋',
+              '台北音樂流行中心',
+              'TICC 台北國際會議中心',
+              '南港展覽館',
+              '台大體育館',
+              '新莊體育館',
+              'Zepp New Taipei',
+            ]"
             :error-messages="location.errorMessage.value"
-          >
-          </v-text-field>
+          ></v-combobox>
           <v-textarea
             v-model="description.value.value"
             type="text"
@@ -123,7 +131,7 @@ const calendar = ref([])
 const headers = computed(() => {
   return [
     { title: '活動時間', key: 'start', sortable: true },
-    { title: '活動圖片', key: 'image', sortable: true },
+    { title: '活動圖片', key: 'image', sortable: false },
     { title: '活動名稱', key: 'title', sortable: true },
     { title: '活動地點', key: 'location', sortable: true },
     { title: '新增時間', key: 'createdAt', sortable: true },
@@ -229,7 +237,7 @@ const submit = handleSubmit(async (values) => {
     getCalendar()
 
     createSnackbar({
-      text: dialog.value.id.length > 0 ? '編輯成功' : '新增成功',
+      text: dialog.value.id.length > 0 ? '新增成功' : '編輯成功',
       snackbarProps: {
         color: 'blue',
       },
