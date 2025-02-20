@@ -20,7 +20,7 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
@@ -45,8 +45,9 @@ const getEvent = async () => {
       description: event.description, // 事件描述
       location: event.location, // 事件地點
       id: event._id,
+      image: event.image,
     }))
-    console.log(events.value)
+    // console.log(events.value)
   } catch (error) {
     console.log('components.eventCalendar:', error)
     createSnackbar({
@@ -65,6 +66,12 @@ const onEventClick = (event) => {
   // console.log('活動ID', event.id)
   router.push('/calendar/' + event.id)
 }
+
+// 讓父元件可以取資料
+
+onMounted(getEvent)
+
+defineExpose({ events })
 </script>
 
 <style>

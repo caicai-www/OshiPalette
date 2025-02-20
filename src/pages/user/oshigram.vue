@@ -2,193 +2,209 @@
   <v-container class="text-center">
     <h1 class="text-center justify-center py-6">我的照片牆/收藏</h1>
 
-    <v-tabs v-model="currentTab" color="black" grow>
-      <v-tab v-for="item in tabs" :key="item.text" :value="item.text">{{ item.title }}</v-tab>
+    <v-tabs v-model="currentTab" color="black" align-tabs="start">
+      <v-tab
+        v-for="item in tabs"
+        :key="item.text"
+        :value="item.text"
+        :prepend-icon="item.icon"
+        stacked
+        class="tab-title"
+        selected-class="selected"
+        >{{ item.title }}</v-tab
+      >
     </v-tabs>
 
-    <v-tabs-window v-model="currentTab">
+    <v-tabs-window v-model="currentTab" class="tab-window">
       <!-- 照片頁面-->
       <v-tabs-window-item value="photo">
-        <v-container>
-          <v-toolbar>
-            <v-row>
-              <v-col cols="12" md="1">
-                <v-btn variant="outlined" @click="openDialog(null)">新增貼文</v-btn>
-              </v-col>
-              <v-col cols="12" md="10">
-                <color-option></color-option>
-              </v-col>
-            </v-row>
-          </v-toolbar>
+        <v-row>
+          <v-col cols="12" md="1">
+            <v-btn rounded="xl" class="button" @click="openDialog(null)">新增貼文</v-btn>
+          </v-col>
+          <v-col cols="12" md="10">
+            <color-option></color-option>
+          </v-col>
+        </v-row>
 
-          <v-row class="mt-5">
-            <v-col v-for="post in posts" :key="post._id" cols="12" md="4" lg="3">
-              <post-card v-bind="post"></post-card>
-            </v-col>
-          </v-row>
-        </v-container>
+        <v-row class="mt-5">
+          <v-col v-for="post in posts" :key="post._id" cols="12" md="3">
+            <post-card v-bind="post"></post-card>
+          </v-col>
+        </v-row>
       </v-tabs-window-item>
 
       <!-- 收藏頁面 -->
       <v-tabs-window-item value="collection">
-        <v-card>
-          <v-card-text>這是收藏頁面的內容</v-card-text>
-          <v-row class="mt-5">
-            <v-col v-for="favorite in favorites" :key="favorite._id" cols="12" md="4" lg="3">
-              <post-card v-bind="favorite.post"></post-card>
-            </v-col>
-          </v-row>
-        </v-card>
+        <v-card-text>這是收藏頁面的內容</v-card-text>
+        <v-row class="mt-5">
+          <v-col v-for="favorite in favorites" :key="favorite._id" cols="12" md="4" lg="3">
+            <post-card v-bind="favorite.post"></post-card>
+          </v-col>
+        </v-row>
       </v-tabs-window-item>
     </v-tabs-window>
   </v-container>
 
   <!-- Dialog 新增貼文、編輯貼文 -->
-  <v-dialog v-model="dialog.open" persistent>
+  <v-dialog v-model="dialog.open" persistent max-width="1200px">
     <v-form :disabled="isSubmitting" @submit.prevent="submit">
-      <v-card>
+      <v-card :style="useStyle.containerStyle" class="bg pa-10 rounded-xl">
         <v-card-title>新增貼文</v-card-title>
-        <v-card-text>
-          <VueFileAgent
-            ref="fileAgent"
-            v-model="fileRecords"
-            v-model:raw-model-value="rawFileRecords"
-            accept="image/jpeg,image/png"
-            deletable
-            max-size="1MB"
-            :help-text="'點擊或拖曳檔案至此'"
-            :error-text="{
-              type: '檔案類型錯誤',
-              size: '檔案大小超過限制',
-            }"
-          >
-          </VueFileAgent>
+        <v-row>
+          <v-col cols="12" md="4">
+            <VueFileAgent
+              ref="fileAgent"
+              v-model="fileRecords"
+              v-model:raw-model-value="rawFileRecords"
+              accept="image/jpeg,image/png"
+              deletable
+              max-size="1MB"
+              :help-text="'點擊或拖曳圖片至此'"
+              :error-text="{
+                type: '檔案類型錯誤',
+                size: '檔案大小超過限制',
+              }"
+            >
+            </VueFileAgent>
+          </v-col>
+          <v-col cols="12" md="8">
+            <v-card-text>
+              <v-text-field
+                v-model="title.value.value"
+                :label="'標題'"
+                :error-messages="title.errorMessage.value"
+              ></v-text-field>
+              <v-textarea
+                v-model="content.value.value"
+                :label="'內容'"
+                :error-messages="content.errorMessage.value"
+              ></v-textarea>
 
-          <v-text-field
-            v-model="title.value.value"
-            :label="'標題'"
-            :error-messages="title.errorMessage.value"
-          ></v-text-field>
-          <v-textarea
-            v-model="content.value.value"
-            :label="'內容'"
-            :error-messages="content.errorMessage.value"
-          ></v-textarea>
-
-          <!-- 顏色選單 -->
-          <v-select
-            v-model="colors.value.value"
-            chips
-            :items="colorOptions"
-            :label="'顏色'"
-            :error-messages="colors.errorMessage.value"
-            item-value="value"
-            item-title="text"
-          >
-            <template #selection="{ item }">
-              <v-chip :color="item.value">
-                <v-avatar left>
-                  <span
-                    :style="{
-                      backgroundColor: item.value,
-                      width: '16px',
-                      height: '16px',
-                      borderRadius: '50%',
-                      display: 'inline-block',
-                    }"
-                  ></span>
-                </v-avatar>
-                {{ item.text }}
-              </v-chip>
-            </template>
-
-            <template #item="{ props, item }">
-              <v-list-item v-bind="props">
-                <template #prepend>
-                  <v-avatar size="20">
-                    <span
-                      :style="{
-                        backgroundColor: item.value,
-                        width: '20px',
-                        height: '20px',
-                        borderRadius: '50%',
-                        display: 'inline-block',
-                      }"
-                    ></span>
-                  </v-avatar>
+              <!-- 顏色選單 -->
+              <v-select
+                v-model="colors.value.value"
+                chips
+                :items="colorOptions"
+                :label="'顏色'"
+                :error-messages="colors.errorMessage.value"
+                item-value="value"
+                item-title="text"
+              >
+                <template #selection="{ item }">
+                  <v-chip :color="item.value">
+                    <v-avatar left>
+                      <span
+                        :style="{
+                          backgroundColor: item.value,
+                          width: '16px',
+                          height: '16px',
+                          borderRadius: '50%',
+                          display: 'inline-block',
+                        }"
+                      ></span>
+                    </v-avatar>
+                    {{ item.text }}
+                  </v-chip>
                 </template>
-                {{ item.text }}
-              </v-list-item>
-            </template>
-          </v-select>
 
-          <!-- https://vuetifyjs.com/en/components/combobox/#advanced-custom-options -->
-          <!-- 標籤tag選單  combobox-->
-          <v-combobox
-            v-model="tags.value.value"
-            v-model:search="search"
-            :error-messages="tags.errorMessage.value ? [tags.errorMessage.value] : []"
-            :custom-filter="filter"
-            :items="items"
-            label="標籤"
-            variant="solo"
-            hide-selected
-            multiple
-          >
-            <template #selection="{ item, index }">
-              <v-chip
-                v-if="item === Object(item)"
-                :color="`${item.raw.color}-lighten-3`"
-                :text="item.title"
-                size="small"
-                variant="flat"
-                closable
-                label
-                @click:close="removeSelection(index)"
-              ></v-chip>
-            </template>
-            <template #item="{ props, item }">
-              <v-list-item v-if="item.raw.header && search">
-                <span class="mr-3">Create</span>
-                <v-chip :color="`${colors[nonce - 1]}-lighten-3`" size="small" variant="flat" label>
-                  {{ search }}
-                </v-chip>
-              </v-list-item>
-              <v-list-subheader v-else-if="item.raw.header" :title="item.title"></v-list-subheader>
-              <v-list-item v-else @click="props.onClick">
-                <v-text-field
-                  v-if="editingItem === item.raw"
-                  v-model="editingItem.title"
-                  bg-color="transparent"
-                  class="mr-3"
-                  density="compact"
-                  variant="plain"
-                  autofocus
-                  hide-details
-                  @click.stop
-                  @keydown.stop
-                  @keyup.enter="edit(item.raw)"
-                ></v-text-field>
-                <v-chip
-                  v-else
-                  :color="`${item.raw.color}-lighten-3`"
-                  :text="item.raw.title"
-                  variant="flat"
-                  label
-                ></v-chip>
-                <template #append>
-                  <v-btn
-                    :color="editingItem !== item.raw ? 'primary' : 'success'"
-                    :icon="editingItem !== item.raw ? 'mdi-pencil' : 'mdi-check'"
+                <template #item="{ props, item }">
+                  <v-list-item v-bind="props">
+                    <template #prepend>
+                      <v-avatar size="20">
+                        <span
+                          :style="{
+                            backgroundColor: item.value,
+                            width: '20px',
+                            height: '20px',
+                            borderRadius: '50%',
+                            display: 'inline-block',
+                          }"
+                        ></span>
+                      </v-avatar>
+                    </template>
+                    {{ item.text }}
+                  </v-list-item>
+                </template>
+              </v-select>
+
+              <!-- https://vuetifyjs.com/en/components/combobox/#advanced-custom-options -->
+              <!-- 標籤tag選單  combobox-->
+              <v-combobox
+                v-model="tags.value.value"
+                v-model:search="search"
+                :error-messages="tags.errorMessage.value ? [tags.errorMessage.value] : []"
+                :custom-filter="filter"
+                :items="items"
+                label="標籤"
+                variant="solo"
+                hide-selected
+                multiple
+              >
+                <template #selection="{ item, index }">
+                  <v-chip
+                    v-if="item === Object(item)"
+                    :color="`${item.raw.color}-lighten-3`"
+                    :text="item.title"
                     size="small"
-                    variant="text"
-                    @click.stop.prevent="edit(item.raw)"
-                  ></v-btn>
+                    variant="flat"
+                    closable
+                    label
+                    @click:close="removeSelection(index)"
+                  ></v-chip>
                 </template>
-              </v-list-item>
-            </template>
-          </v-combobox>
-        </v-card-text>
+                <template #item="{ props, item }">
+                  <v-list-item v-if="item.raw.header && search">
+                    <span class="mr-3">Create</span>
+                    <v-chip
+                      :color="`${colors[nonce - 1]}-lighten-3`"
+                      size="small"
+                      variant="flat"
+                      label
+                    >
+                      {{ search }}
+                    </v-chip>
+                  </v-list-item>
+                  <v-list-subheader
+                    v-else-if="item.raw.header"
+                    :title="item.title"
+                  ></v-list-subheader>
+                  <v-list-item v-else @click="props.onClick">
+                    <v-text-field
+                      v-if="editingItem === item.raw"
+                      v-model="editingItem.title"
+                      bg-color="transparent"
+                      class="mr-3"
+                      density="compact"
+                      variant="plain"
+                      autofocus
+                      hide-details
+                      @click.stop
+                      @keydown.stop
+                      @keyup.enter="edit(item.raw)"
+                    ></v-text-field>
+                    <v-chip
+                      v-else
+                      :color="`${item.raw.color}-lighten-3`"
+                      :text="item.raw.title"
+                      variant="flat"
+                      label
+                    ></v-chip>
+                    <template #append>
+                      <v-btn
+                        :color="editingItem !== item.raw ? 'primary' : 'success'"
+                        :icon="editingItem !== item.raw ? 'mdi-pencil' : 'mdi-check'"
+                        size="small"
+                        variant="text"
+                        @click.stop.prevent="edit(item.raw)"
+                      ></v-btn>
+                    </template>
+                  </v-list-item>
+                </template>
+              </v-combobox> </v-card-text
+          ></v-col>
+        </v-row>
+
         <v-card-actions>
           <v-btn @click="closeDialog">關閉視窗</v-btn>
           <v-btn type="submit" :loading="isSubmitting">確認送出</v-btn>
@@ -207,9 +223,11 @@ import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useUserStore } from '@/stores/user'
+import { useThemeStore } from '@/stores/style'
 
 const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
+const useStyle = useThemeStore()
 
 const currentTab = ref('photo')
 const posts = ref([])
@@ -257,8 +275,8 @@ const closeDialog = () => {
 
 const tabs = computed(() => {
   return [
-    { title: '照片', text: 'photo' },
-    { title: '收藏', text: 'collection' },
+    { title: '我的貼文', text: 'photo', icon: 'mdi-image' },
+    { title: '我的收藏', text: 'collection', icon: 'mdi-heart' },
   ]
 })
 
@@ -410,6 +428,40 @@ const getFavorite = async () => {
 
 getFavorite()
 </script>
+
+<style scoped>
+.tab-window {
+  background: rgba(189, 189, 189, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  backdrop-filter: hue-rotate(80deg) saturate(-20%) blur(15px);
+  border-radius: 0px 10px 30px 30px;
+  box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.2);
+  padding: 2rem;
+}
+
+.tab-title {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(189, 189, 189, 0.3);
+  backdrop-filter: hue-rotate(80deg) saturate(-20%);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+
+.selected {
+  background: rgba(189, 189, 189, 0.3);
+  backdrop-filter: hue-rotate(100deg) saturate(100%);
+}
+
+.button {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: rgba(189, 189, 189, 0.3);
+  backdrop-filter: hue-rotate(100deg) saturate(100%);
+}
+
+.bg {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+</style>
 
 <route lang="yaml">
 meta:

@@ -198,15 +198,7 @@ const submit = handleSubmit(async (values) => {
 })
 </script>
 
-<style scoped>
-.glass-card {
-  background: rgba(207, 207, 207, 0.2);
-  backdrop-filter: hue-rotate(80deg) saturate(-20%);
-  border-radius: 30px;
-  padding: 16px;
-  box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.1);
-}
-</style>
+<style scoped></style>
 
 <route lang="yaml">
 meta:

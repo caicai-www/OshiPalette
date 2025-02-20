@@ -20,7 +20,7 @@
         ></v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-main :style="containerStyle" class="bg-watercolor">
+    <v-main :style="useStyle.containerStyle" class="bg-watercolor">
       <router-view> </router-view>
     </v-main>
   </v-app>
@@ -29,7 +29,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
-import bgImage from '@/assets/bg.jpg'
+import { useThemeStore } from '@/stores/style'
+
+const useStyle = useThemeStore()
 
 const drawer = ref()
 const isMobile = ref(false)
@@ -47,39 +49,6 @@ const navs = computed(() => {
 const checkIsMobile = () => {
   isMobile.value = window.innerWidth < 600
 }
-
-const colors = ['#ffa6a6', '#f9a8d4', '#decfff', '#cff9ff', '#b9ffb3', '#fffcaf', '#ffbf95']
-
-// 計算屬性，用來生成隨機的漸層
-const randomGradient = computed(() => {
-  const numColors = Math.floor(Math.random() * 6) + 2
-  const selectedColors = getRandomColors(numColors)
-  const degree = Math.floor(Math.random() * 360)
-  return `linear-gradient(${degree}deg, ${selectedColors.join(', ')})`
-})
-
-// 隨機選擇顏色
-function getRandomColors(num) {
-  const shuffledColors = [...colors]
-
-  // 隨機打亂顏色陣列
-  for (let i = shuffledColors.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffledColors[i], shuffledColors[j]] = [shuffledColors[j], shuffledColors[i]]
-  }
-
-  // 返回前 num 個顏色
-  return shuffledColors.slice(0, num)
-}
-
-const containerStyle = computed(() => {
-  return {
-    background: `url(${bgImage}), ${randomGradient.value}`,
-    backgroundSize: 'cover', // 使背景圖片完全覆蓋容器
-    backgroundBlendMode: 'hard-light', // 混合模式
-    backgroundPosition: 'center', // 背景居中
-  }
-})
 
 onMounted(() => {
   checkIsMobile()

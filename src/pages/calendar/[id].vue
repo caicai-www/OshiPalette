@@ -82,10 +82,27 @@
           <v-col>
             <!-- 話題串留言內容 -->
 
+            <v-list class="bg-info mt-10">
+              <v-list-item v-for="topicReply in TopicDialog.reply" :key="topicReply" class="mb-2">
+                <!-- <v-avatar>
+                  <v-img :src="reply.user.image"></v-img>
+                </v-avatar> -->
+                <v-list-item-content>
+                  <!-- <v-list-item-subtitle>{{ reply.user.name }}</v-list-item-subtitle> -->
+                  <v-list-item-title>{{ topicReply.reply }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+
             <!-- 話題串留言框 -->
-            <v-form>
-              <v-textarea class="py-10"></v-textarea>
-              <v-btn>送出</v-btn>
+            <v-form :disabled="isReplySubmitting" @submit.prevent="submitReply">
+              <v-textarea
+                v-model="reply.value.value"
+                class="py-10"
+                label="請輸入留言"
+                :error-messages="reply.errorMessage.value"
+              ></v-textarea>
+              <v-btn type="submit" :loading="isReplySubmitting">送出</v-btn>
             </v-form>
           </v-col>
         </v-row>
@@ -95,7 +112,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useRoute, useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -171,8 +188,8 @@ const closeaddTopicDialog = () => {
 
 // 討論串的表單
 const schema = yup.object({
-  title: yup.string().required('標題必填').max(20, '標題太長'),
-  content: yup.string().required('內容必填').max(200, '內容文字最多200字'),
+  title: yup.string().required('話題串標題必填').max(20, '標題太長'),
+  content: yup.string().required('話題串內容必填').max(200, '內容文字最多200字'),
 })
 
 const { handleSubmit, isSubmitting, resetForm } = useForm({
@@ -222,13 +239,19 @@ const submitTopic = handleSubmit(async (values) => {
 })
 
 // 取討論串資料
-const topics = ref([])
+const topics = reactive([])
 
 const getTopics = async () => {
   try {
     const { data } = await api.get('/calendarTopic', { params: { calendar: route.params.id } })
-    topics.value = data.result
-    console.log(topics.value.length)
+    topics.splice(0, topics.length, ...data.result)
+    if (TopicDialog.value.id) {
+      const topic = topics.find((topic) => topic._id === TopicDialog.value.id)
+      if (topic) {
+        TopicDialog.value.reply = topic.reply
+      }
+    }
+    console.log(topics)
   } catch (error) {
     console.log('pages.calendar.[id].getTopics:', error)
     createSnackbar({
@@ -242,7 +265,7 @@ const getTopics = async () => {
 
 getTopics()
 
-console.log(topics)
+// console.log(topics)
 
 // 開啟討論串內容
 const TopicDialog = ref({
@@ -252,20 +275,83 @@ const TopicDialog = ref({
   content: '',
   name: '',
   icon: '',
+  reply: [],
 })
 
 const openTopicDialog = (topic) => {
   TopicDialog.value.id = topic._id
   TopicDialog.value.title = topic.title
   TopicDialog.value.content = topic.content
+  TopicDialog.value.reply = topic.reply
   TopicDialog.value.name = topic.user.name
   TopicDialog.value.icon = topic.user.image
+
   console.log(TopicDialog.value)
 
   TopicDialog.value.open = true
 }
 
-// const closeTopicDialog = () => {
+// 討論串回覆表單
+const replySchema = yup.object({
+  reply: yup.string().required('回覆內容必填').max(200, '內容最多200字'),
+})
 
-// }
+const {
+  handleSubmit: handleReplySubmit,
+  isSubmitting: isReplySubmitting,
+  resetForm: resetReplyForm,
+} = useForm({
+  validationSchema: replySchema,
+})
+
+const reply = useField('reply')
+
+const submitReply = handleReplySubmit(async (values) => {
+  // console.log('回覆內容:', values.reply)
+
+  if (!user.isLoggedIn) {
+    createSnackbar({
+      text: '尚未登入，請先登入才能回覆討論串',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    router.push('/login') // 導向登入頁
+    return
+  }
+
+  if (!user.reply) {
+    createSnackbar({
+      text: '無留言權限',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    return
+  }
+
+  try {
+    await apiAuth.patch('/calendarTopic/' + TopicDialog.value.id, {
+      user: user.id,
+      reply: values.reply,
+    })
+
+    createSnackbar({
+      text: '成功新增回覆',
+      snackbarProps: {
+        color: 'success',
+      },
+    })
+    resetReplyForm()
+    await getTopics()
+  } catch (error) {
+    console.log('pages.calendar.[id].submitReply:', error)
+    createSnackbar({
+      text: error?.response?.data?.message || '回覆討論串失敗',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+})
 </script>
