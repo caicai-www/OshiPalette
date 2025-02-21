@@ -34,7 +34,7 @@ export const useUserStore = defineStore(
       role.value = data.role
       post.value = data.post
       reply.value = data.reply
-      favorite.push(data.favorite)
+      favorite.push(...data.favorite)
     }
 
     const logout = () => {
@@ -44,6 +44,7 @@ export const useUserStore = defineStore(
       reply.value = ''
       id.value = ''
       role.value = UserRole.USER
+      favorite.splice(0, favorite.length)
     }
 
     return {
@@ -53,6 +54,7 @@ export const useUserStore = defineStore(
       id,
       post,
       reply,
+      favorite,
       isLoggedIn,
       isAdmin,
       login,

@@ -24,7 +24,7 @@
     </v-container>
   </v-toolbar>
 
-  <v-main>
+  <v-main class="bg">
     <router-view></router-view>
   </v-main>
 </template>

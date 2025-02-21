@@ -5,11 +5,9 @@ body {
 }
 
 .bg {
-  background: url('@/assets/bg.jpg'),
-    linear-gradient(130deg, hsl(0, 100%, 83%), #f9a8d4, #decfff, #cff9ff, #b9ffb3, #fffcaf, #ffbf95);
+  background: url('@/assets/bg.jpg'), linear-gradient(130deg, #d4d4d4, #ffdac1);
   background-position: center;
-
-  background-origin: padding-box;
+  background-repeat: repeat;
   background-blend-mode: hard-light;
 }
 

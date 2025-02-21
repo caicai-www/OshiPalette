@@ -167,7 +167,16 @@ const addTopicDialog = ref({
 })
 
 const openaddTopicDialog = () => {
-  if (!user.post) {
+  if (!user.isLoggedIn) {
+    createSnackbar({
+      text: '尚未登入，請先登入才能新增討論串',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    router.push('/login') // 導向登入頁
+    return
+  } else if (!user.post) {
     createSnackbar({
       text: '無發文權限',
       snackbarProps: {
@@ -200,17 +209,6 @@ const title = useField('title')
 const content = useField('content')
 
 const submitTopic = handleSubmit(async (values) => {
-  if (!user.isLoggedIn) {
-    createSnackbar({
-      text: '尚未登入，請先登入才能新增討論串',
-      snackbarProps: {
-        color: 'red',
-      },
-    })
-    router.push('/login') // 導向登入頁
-    return
-  }
-
   try {
     await apiAuth.post('/calendarTopic', {
       title: values.title,

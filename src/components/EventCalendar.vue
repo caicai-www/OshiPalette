@@ -20,7 +20,7 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useRouter } from 'vue-router'
@@ -34,10 +34,13 @@ const today = new Date()
 
 const events = ref([])
 
+const emit = defineEmits(['updateEvents'])
+
 // 取得活動資料
 const getEvent = async () => {
   try {
     const { data } = await api.get('/calendar')
+
     events.value = data.result.map((event) => ({
       start: new Date(event.start).toISOString().split('T')[0],
       end: new Date(event.end).toISOString().split('T')[0],
@@ -47,6 +50,9 @@ const getEvent = async () => {
       id: event._id,
       image: event.image,
     }))
+
+    emit('updateEvents', events.value)
+
     // console.log(events.value)
   } catch (error) {
     console.log('components.eventCalendar:', error)
@@ -66,12 +72,6 @@ const onEventClick = (event) => {
   // console.log('活動ID', event.id)
   router.push('/calendar/' + event.id)
 }
-
-// 讓父元件可以取資料
-
-onMounted(getEvent)
-
-defineExpose({ events })
 </script>
 
 <style>

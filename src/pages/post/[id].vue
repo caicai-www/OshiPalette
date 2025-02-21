@@ -1,71 +1,74 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="12" md="5" class="bg-info">
-        <v-img :src="post.image"></v-img>
-      </v-col>
-      <v-col cols="12" md="7" class="bg-warning">
-        <v-card>
-          <v-row>
-            <v-col cols="12" md="5" class="mt-5">
-              <v-img
-                :src="post.author.image"
-                cover
-                width="150"
-                height="150"
-                class="mx-auto rounded-circle"
-              ></v-img>
-              <p class="text-center">{{ post.author.name }}</p>
-            </v-col>
-            <v-col cols="12" md="7" class="bg-primary">
-              <h2 class="ma-2">{{ post.title }}</h2>
-              <p class="ma-2">{{ post.content }}</p>
-              <v-chip v-for="tag in post.tags" :key="tag" class="ma-2">{{ tag }}</v-chip>
-              <!--  新增收藏 -->
-              <v-btn
-                :color="isFavorite ? 'red' : 'grey'"
-                prepend-icon="mdi-heart-plus"
-                @click="addFavorite"
-                >新增至我的收藏</v-btn
+  <v-container class="mt-10">
+    <v-card rounded="xl " class="glass-card">
+      <v-row class="ma-5">
+        <!-- 照片區 -->
+        <v-col cols="12" md="5">
+          <v-img :src="post.image"></v-img>
+        </v-col>
+        <!-- 文章區 -->
+        <v-col cols="12" md="7">
+          <v-card class="glass-card">
+            <v-row>
+              <v-col cols="12" md="5" class="mt-5">
+                <v-img
+                  :src="post.author.image"
+                  cover
+                  width="150"
+                  height="150"
+                  class="mx-auto rounded-circle"
+                ></v-img>
+                <p class="text-center">{{ post.author.name }}</p>
+              </v-col>
+              <v-col cols="12" md="7">
+                <h2 class="ma-2">{{ post.title }}</h2>
+                <p class="ma-2">{{ post.content }}</p>
+                <v-chip v-for="tag in post.tags" :key="tag" class="ma-2">{{ tag }}</v-chip>
+                <!--  新增收藏 -->
+
+                <v-btn v-if="!isFavorite" prepend-icon="mdi-heart-plus" @click="addFavorite"
+                  >新增至我的收藏</v-btn
+                >
+                <v-btn v-else prepend-icon="mdi-heart-plus">從我的收藏移除</v-btn>
+              </v-col>
+            </v-row>
+            <v-divider></v-divider>
+            <h3 class="ma-2">Comments:</h3>
+            <p class="ms-2 my-5">共{{ replys.length }}則留言</p>
+
+            <!-- 評論區域 -->
+            <v-list class="bg-transparent">
+              <v-list-item v-for="reply in replys" :key="reply" class="mb-5">
+                <v-avatar>
+                  <v-img :src="reply.user.image"></v-img>
+                </v-avatar>
+
+                <v-list-item-content>
+                  <v-list-item-subtitle>{{ reply.user.name }}</v-list-item-subtitle>
+                  <v-list-item-title>{{ reply.content }}</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+
+            <v-form :disabled="isSubmitting" @submit.prevent="submit">
+              <v-textarea
+                v-model="content.value.value"
+                :error-messages="content.errorMessage.value"
+                class="pa-2"
+                label="新增留言"
               >
-            </v-col>
-          </v-row>
-          <v-divider></v-divider>
-          <h3 class="ma-2">Comments:</h3>
-          <p class="ms-2 my-5">共{{ replys.length }}則留言</p>
-
-          <!-- 評論區域 -->
-          <v-list>
-            <v-list-item v-for="reply in replys" :key="reply" class="mb-5">
-              <v-avatar>
-                <v-img :src="reply.user.image"></v-img>
-              </v-avatar>
-
-              <v-list-item-content>
-                <v-list-item-subtitle>{{ reply.user.name }}</v-list-item-subtitle>
-                <v-list-item-title>{{ reply.content }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-
-          <v-form :disabled="isSubmitting" @submit.prevent="submit">
-            <v-textarea
-              v-model="content.value.value"
-              :error-messages="content.errorMessage.value"
-              class="pa-2"
-              label="新增留言"
-            >
-            </v-textarea
-            ><v-btn type="submit" :loading="isSubmitting">送出</v-btn>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row>
+              </v-textarea
+              ><v-btn type="submit" :loading="isSubmitting">送出</v-btn>
+            </v-form>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useRoute, useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -197,6 +200,14 @@ const getReply = async () => {
 getReply()
 
 // 收藏區
+
+console.log(user.favorite)
+
+const isFavorite = computed(() => {
+  return user.favorite.some((fav) => fav.post === post.value._id)
+})
+
+console.log(isFavorite)
 
 const addFavorite = async () => {
   if (!user.isLoggedIn) {

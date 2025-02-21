@@ -4,33 +4,26 @@
     <swiper
       :space-between="30"
       :centered-slides="true"
-      :autoplay="{
-        delay: 2500,
-        disableOnInteraction: false,
-      }"
-      :pagination="{
-        clickable: true,
-      }"
+      :autoplay="{ delay: 2500, disableOnInteraction: false }"
+      :pagination="{ clickable: true }"
       :navigation="true"
       :modules="modules"
       class="mySwiper"
     >
-      <swiper-slide>Slide 1</swiper-slide>
-      <swiper-slide>Slide 2</swiper-slide><swiper-slide>Slide 3</swiper-slide>
-      <swiper-slide>Slide 4</swiper-slide><swiper-slide>Slide 5</swiper-slide>
-      <swiper-slide>Slide 6</swiper-slide><swiper-slide>Slide 7</swiper-slide>
-      <swiper-slide>Slide 8</swiper-slide><swiper-slide>Slide 9</swiper-slide>
+      <swiper-slide v-for="event in eventsData" :key="event.id">
+        <img :src="event.image" class="event-image" />
+      </swiper-slide>
     </swiper>
-    <!-- <pre>{{ eventCalendarRef.events }}</pre> -->
   </v-container>
+
   <v-app>
     <!-- 活動月曆 -->
-    <EventCalendar ref="eventCalendarRef" />
+    <EventCalendar @update-events="(events) => (eventsData = events)" />
   </v-app>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, watch } from 'vue'
 import EventCalendar from '@/components/EventCalendar.vue'
 
 // SWIPER
@@ -49,19 +42,33 @@ import { Autoplay, Pagination, Navigation } from 'swiper/modules'
 
 const modules = [Autoplay, Pagination, Navigation]
 
-// 取子層資料
-const eventCalendarRef = ref(null)
 const eventsData = ref([])
 
-onMounted(() => {
-  if (eventCalendarRef.value) {
-    eventsData.value = eventCalendarRef.value.events
-
-    console.log(eventCalendarRef.value) // 檢查完整結構
-    console.log(eventCalendarRef.value.events) // 檢查 events 的內容
-    // console.log('Fetched events:', events.value)
-  }
+watch(eventsData, (newEvents) => {
+  console.log('📢 監聽到 eventsData 變化:', newEvents)
+  console.log(eventsData.value)
 })
+
+// onMounted(() => {
+//   setTimeout(() => {
+//     // 等待數據載入後再取值
+//     console.log(eventCalendarRef.value.events)
+//     if (eventCalendarRef.value) {
+//       eventsData.value = eventCalendarRef.value.events
+//     }
+//     console.log(eventsData.value)
+//   }, 500)
+// })
+
+// onMounted(() => {
+//   if (eventCalendarRef.value) {
+//     eventsData.value = eventCalendarRef.value.events
+
+//     console.log(eventCalendarRef.value) // 檢查完整結構
+//     console.log(eventCalendarRef.value.events) // 檢查 events 的內容
+//     // console.log('Fetched events:', events.value)
+//   }
+// })
 </script>
 
 <route lang="yaml">

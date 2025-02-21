@@ -1,6 +1,3 @@
-#app {
-  height: 100%;
-}
 html,
 body {
   position: relative;
@@ -18,7 +15,7 @@ body {
 
 .swiper {
   width: 100%;
-  height: 100%;
+  height: 500px;
 }
 
 .swiper-slide {
@@ -34,7 +31,6 @@ body {
 
 .swiper-slide img {
   display: block;
-  width: 100%;
   height: 100%;
   object-fit: cover;
 }
