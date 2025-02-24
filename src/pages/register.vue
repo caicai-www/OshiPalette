@@ -1,15 +1,15 @@
 <template>
   <v-container>
-    <v-card class="pa-10 mt-10 reg-log-bg" elevation="12">
+    <v-card class="pa-10 mt-10 reg-log-bg">
       <vue-particles
         id="tsparticles"
         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
-        :options="dynamicOptions"
+        :options="useStyle.dynamicOptions"
         @particles-loaded="particlesLoaded"
       />
       <v-row>
         <v-col cols="12" md="7"> </v-col>
-        <v-col cols="12" md="5" class="my-0 bg-info" style="position: relative; z-index: 1">
+        <v-col cols="12" md="5" class="my-0" style="position: relative; z-index: 1">
           <h1 class="text-center">註冊</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
@@ -48,9 +48,11 @@
               label="確認密碼"
               variant="outlined"
             />
-            <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5"> 註冊</v-btn>
+            <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5" class="button">
+              註冊</v-btn
+            >
           </v-form>
-          <p class="mt-5" @click="toLogin">已經有帳號了?</p></v-col
+          <p class="mt-5 text-hover" @click="toLogin">已經有帳號了?</p></v-col
         >
       </v-row>
     </v-card>
@@ -58,7 +60,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { useThemeStore } from '@/stores/style'
 import { useForm, useField } from 'vee-validate'
 import validator from 'validator'
 import * as yup from 'yup'
@@ -69,6 +71,8 @@ import { useRouter } from 'vue-router'
 const { api } = useAxios()
 const router = useRouter()
 const createSnackbar = useSnackbar()
+
+const useStyle = useThemeStore()
 
 const schema = yup.object({
   account: yup
@@ -126,93 +130,9 @@ const submit = handleSubmit(async (values) => {
 const toLogin = () => {
   router.push('/login')
 }
-
-const dynamicOptions = ref({
-  fullScreen: { enable: false },
-  background: {
-    color: {
-      value: '#0d47a1',
-    },
-  },
-  fpsLimit: 120,
-  interactivity: {
-    events: {
-      onClick: {
-        enable: true,
-        mode: 'push',
-      },
-      onHover: {
-        enable: true,
-        mode: 'repulse',
-      },
-    },
-    modes: {
-      bubble: {
-        distance: 400,
-        duration: 2,
-        opacity: 0.8,
-        size: 40,
-      },
-      push: {
-        quantity: 4,
-      },
-      repulse: {
-        distance: 200,
-        duration: 0.4,
-      },
-    },
-  },
-  particles: {
-    color: {
-      value: '#ffffff',
-    },
-    links: {
-      color: '#ffffff',
-      distance: 150,
-      enable: true,
-      opacity: 0.5,
-      width: 1,
-    },
-    move: {
-      direction: 'none',
-      enable: true,
-      outModes: 'bounce',
-      random: false,
-      speed: 6,
-      straight: false,
-    },
-    number: {
-      density: {
-        enable: true,
-      },
-      value: 80,
-    },
-    opacity: {
-      value: 0.5,
-    },
-    shape: {
-      type: 'circle',
-    },
-    size: {
-      value: { min: 1, max: 5 },
-    },
-  },
-  detectRetina: true,
-})
 </script>
 
 <style scoped>
-.reg-log-bg {
-  border-radius: 50% 20% / 10% 40%;
-  background: plum;
-  padding: 20px;
-  text-align: center;
-  position: relative;
-  /* border: 10px solid transparent;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
-  border-image: url('@/assets/bg.jpg') 30 round; */
-}
-
 .gradient {
   background: linear-gradient(30deg, #decfff, #decfff00 80%),
     linear-gradient(157deg, #cff9ff, #cff9ff00 80%),

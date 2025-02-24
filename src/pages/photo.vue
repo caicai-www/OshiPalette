@@ -41,6 +41,8 @@ const filterPostsByColor = (color) => {
   // console.log('所有貼文', posts.value)
   if (!color) {
     filteredPosts.value = posts.value // 沒選擇顏色時顯示所有貼文
+  } else if (color === 'all') {
+    filteredPosts.value = [...posts.value]
   } else {
     filteredPosts.value = posts.value.filter(
       (post) => post.colors?.toLowerCase() === color.toLowerCase(),

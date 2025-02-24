@@ -1,12 +1,12 @@
 <template>
   <v-container>
     <!-- 活動資訊區 -->
-    <v-card>
+    <v-card class="glass-card">
       <v-row>
-        <v-col cols="12" md="7" class="bg-primary">
+        <v-col cols="12" md="7">
           <v-img :src="calendar.image" cover></v-img>
         </v-col>
-        <v-col cols="12" md="5" class="bg-red">
+        <v-col cols="12" md="5">
           <v-card-item>
             <h3>{{ calendar.title }}</h3>
             <v-card-text>
@@ -16,23 +16,30 @@
             <v-card-text>
               <v-icon icon="mdi-map-marker"></v-icon>地點: {{ calendar.location }}
             </v-card-text>
-            <v-btn>參加活動</v-btn>
+            <v-btn v-if="!isJoin" class="button rounded-xl ma-5" @click="toggleEvent"
+              >參加活動</v-btn
+            >
+            <v-btn v-else class="button rounded-xl ma-5" @click="toggleEvent">取消參加活動</v-btn>
           </v-card-item>
         </v-col>
       </v-row>
-      <p class="bg-blue ma-10">{{ calendar.description }}</p>
+      <p class="ma-10">{{ calendar.description }}</p>
     </v-card>
 
     <!-- 討論串區 -->
-    <v-card>
-      <h3 class="d-sm-inline-block me-10">Message Board</h3>
-      <v-btn @click="openaddTopicDialog(null)">新增討論串</v-btn>
-      <v-divider></v-divider>
-      <v-list v-if="topics.length > 0">
-        <v-list-item v-for="topic in topics" :key="topic._id">
-          <v-list-item-content>
-            <v-list-item-title @click="openTopicDialog(topic)">{{ topic.title }}</v-list-item-title>
-          </v-list-item-content>
+    <v-card class="glass-card pt-10">
+      <h2 class="d-sm-inline-block ma-5">Message Board</h2>
+      <v-btn class="button rounded-xl ma-5" @click="openaddTopicDialog(null)">新增討論串</v-btn>
+      <v-divider class="my-5"></v-divider>
+      <v-list v-if="topics.length > 0" class="ma-5 bg-transparent">
+        <v-list-item
+          v-for="topic in topics"
+          :key="topic._id"
+          prepend-icon="mdi-chevron-down-box-outline"
+        >
+          <v-list-item-title class="text-decoration-underline" @click="openTopicDialog(topic)">{{
+            topic.title
+          }}</v-list-item-title>
         </v-list-item>
       </v-list>
       <p v-else class="ma-5">尚無討論串</p>
@@ -41,7 +48,7 @@
     <!-- 新增討論串dialog -->
     <v-dialog v-model="addTopicDialog.open" persistent max-width="600px">
       <v-form :disabled="isSubmitting" @submit.prevent="submitTopic">
-        <v-card>
+        <v-card class="bg pa-10 rounded-xl">
           <v-card-title>新增討論串</v-card-title>
 
           <v-card-text>
@@ -57,42 +64,56 @@
             ></v-textarea>
           </v-card-text>
           <v-card-actions>
-            <v-btn @click="closeaddTopicDialog">取消</v-btn>
-            <v-btn type="submit" :loading="isSubmitting">送出</v-btn>
+            <v-btn class="button rounded-xl ma-5" @click="closeaddTopicDialog">取消</v-btn>
+            <v-btn type="submit" :loading="isSubmitting" class="button rounded-xl ma-5">送出</v-btn>
           </v-card-actions>
         </v-card>
       </v-form>
     </v-dialog>
 
     <!-- 開啟討論串內容 -->
-    <v-dialog v-model="TopicDialog.open" max-width="800px">
-      <v-card class="pa-10">
-        <v-row>
-          <v-col cols="12" md="3" class="bg-info">
-            <v-img :src="TopicDialog.icon" cover></v-img>
+    <v-dialog v-model="TopicDialog.open" max-width="1000px">
+      <v-card class="pa-15 bg rounded-xl">
+        <v-row class="glass-card">
+          <v-col cols="12" md="3">
+            <v-img :src="TopicDialog.icon" height="100" class="mx-auto rounded-circle"></v-img>
             <p class="text-center">{{ TopicDialog.name }}</p>
           </v-col>
-          <v-col cols="12" md="9" class="bg-warning">
+          <v-col cols="12" md="9">
             <h3>{{ TopicDialog.title }}</h3>
             <p class="ms-2 my-5">{{ TopicDialog.content }}</p>
           </v-col>
         </v-row>
-        <v-divider></v-divider>
-        <v-row>
+
+        <v-row class="glass-card">
           <v-col>
             <!-- 話題串留言內容 -->
 
-            <v-list class="bg-info mt-10">
-              <v-list-item v-for="topicReply in TopicDialog.reply" :key="topicReply" class="mb-2">
-                <!-- <v-avatar>
-                  <v-img :src="reply.user.image"></v-img>
-                </v-avatar> -->
-                <v-list-item-content>
-                  <!-- <v-list-item-subtitle>{{ reply.user.name }}</v-list-item-subtitle> -->
-                  <v-list-item-title>{{ topicReply.reply }}</v-list-item-title>
+            <v-list v-if="TopicDialog.reply.length > 0" class="bg-transparent">
+              <v-list-item
+                v-for="topicReply in TopicDialog.reply"
+                :key="topicReply"
+                class="mb-5 d-flex flex-row-reverse"
+              >
+                <v-list-item-content class="d-flex flex-row-reverse">
+                  <v-avatar v-if="topicReply.user.image === undefined" color="info">
+                    <v-icon icon="mdi-account"> </v-icon>
+                  </v-avatar>
+                  <v-avatar v-else>
+                    <v-img :src="topicReply.user.image"></v-img>
+                  </v-avatar>
+
+                  <v-list-item-title class="reply-card me-3">{{
+                    topicReply.reply
+                  }}</v-list-item-title>
                 </v-list-item-content>
+
+                <v-list-item-subtitle class="text-right mt-1">{{
+                  topicReply.user.name
+                }}</v-list-item-subtitle>
               </v-list-item>
             </v-list>
+            <p v-else class="ma-5">尚無回覆，快來加入討論吧!</p>
 
             <!-- 話題串留言框 -->
             <v-form :disabled="isReplySubmitting" @submit.prevent="submitReply">
@@ -102,7 +123,9 @@
                 label="請輸入留言"
                 :error-messages="reply.errorMessage.value"
               ></v-textarea>
-              <v-btn type="submit" :loading="isReplySubmitting">送出</v-btn>
+              <v-btn type="submit" :loading="isReplySubmitting" class="button rounded-xl ma-5"
+                >送出</v-btn
+              >
             </v-form>
           </v-col>
         </v-row>
@@ -112,7 +135,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useAxios } from '@/composables/axios'
 import { useRoute, useRouter } from 'vue-router'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -249,7 +272,7 @@ const getTopics = async () => {
         TopicDialog.value.reply = topic.reply
       }
     }
-    console.log(topics)
+    // console.log(topics)
   } catch (error) {
     console.log('pages.calendar.[id].getTopics:', error)
     createSnackbar({
@@ -352,4 +375,74 @@ const submitReply = handleReplySubmit(async (values) => {
     })
   }
 })
+
+// console.log(reply.value)
+
+// 參加活動
+
+const isJoin = computed(() => {
+  return (
+    user.calendar &&
+    Array.isArray(user.calendar) &&
+    user.calendar.some((item) => item.event.toString() === route.params.id)
+  )
+})
+// console.log('route.params.id:', route.params.id) // 確認是否有值
+// console.log('user.calendar:', user.calendar) // 確保是陣列
+// console.log('isJoin:', isJoin) // computed 需用 `.value`
+// console.log('isJoin:', isJoin.value) // computed 需用 `.value`
+
+const toggleEvent = async () => {
+  if (!user.isLoggedIn) {
+    createSnackbar({
+      text: '尚未登入，請先登入',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+    router.push('/login')
+    return
+  }
+
+  try {
+    const { data } = await apiAuth.patch('user/calendar', {
+      event: route.params.id,
+    })
+
+    user.calendar = data.result
+    console.log(user.calendar)
+
+    createSnackbar({
+      text: isJoin.value ? '參加成功' : '已取消參加活動',
+      snackbarProps: {
+        color: 'info',
+      },
+    })
+
+    // createSnackbar({
+    //   text: isFavorite.value ? '收藏成功' : '已從我的收藏移除',
+    //   snackbarProps: {
+    //     color: 'info',
+    //   },
+    // })
+  } catch (error) {
+    console.log('pages.post.[id].toggleFavorites:', error)
+    createSnackbar({
+      text: error?.response?.data?.message || '未知錯誤',
+      snackbarProps: {
+        color: 'red',
+      },
+    })
+  }
+}
 </script>
+
+<style scoped>
+.reply-card {
+  background: rgba(207, 207, 207, 0.2);
+  backdrop-filter: saturate(-50%);
+  border-radius: 5px 5px 15px 30px;
+  padding: 16px;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+</style>

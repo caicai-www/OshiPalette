@@ -1,6 +1,6 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { ref, computed, reactive } from 'vue'
+import { ref, computed } from 'vue'
 import UserRole from '@/enums/UserRole'
 import { useAxios } from '@/composables/axios'
 
@@ -13,7 +13,8 @@ export const useUserStore = defineStore(
     const id = ref('')
     const post = ref('')
     const reply = ref('')
-    const favorite = reactive([])
+    const favorite = ref([])
+    const calendar = ref([])
     const role = ref(UserRole.USER)
 
     const isLoggedIn = computed(() => {
@@ -34,7 +35,8 @@ export const useUserStore = defineStore(
       role.value = data.role
       post.value = data.post
       reply.value = data.reply
-      favorite.push(...data.favorite)
+      favorite.value = data.favorite
+      calendar.value = data.calendar
     }
 
     const logout = () => {
@@ -44,7 +46,7 @@ export const useUserStore = defineStore(
       reply.value = ''
       id.value = ''
       role.value = UserRole.USER
-      favorite.splice(0, favorite.length)
+      favorite.value.splice(0, favorite.value.length)
     }
 
     return {
@@ -55,6 +57,7 @@ export const useUserStore = defineStore(
       post,
       reply,
       favorite,
+      calendar,
       isLoggedIn,
       isAdmin,
       login,

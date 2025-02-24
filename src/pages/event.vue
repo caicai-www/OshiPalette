@@ -2,7 +2,7 @@
   <!-- 活動輪播圖 -->
   <v-container>
     <swiper
-      :space-between="30"
+      :space-between="100"
       :centered-slides="true"
       :autoplay="{ delay: 2500, disableOnInteraction: false }"
       :pagination="{ clickable: true }"
@@ -16,10 +16,8 @@
     </swiper>
   </v-container>
 
-  <v-app>
-    <!-- 活動月曆 -->
-    <EventCalendar @update-events="(events) => (eventsData = events)" />
-  </v-app>
+  <!-- 活動月曆 -->
+  <EventCalendar @update-events="(events) => (eventsData = events)" />
 </template>
 
 <script setup>
@@ -70,6 +68,21 @@ watch(eventsData, (newEvents) => {
 //   }
 // })
 </script>
+
+<style>
+.vuecal__event {
+  background: rgba(207, 207, 207, 0.2);
+  backdrop-filter: hue-rotate(180deg) saturate(100%);
+  border-radius: 30px;
+  padding: 16px;
+  box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.1);
+}
+
+.vuecal__event:hover {
+  background: rgba(207, 207, 207, 0.3);
+  backdrop-filter: hue-rotate(80deg);
+}
+</style>
 
 <route lang="yaml">
 meta:

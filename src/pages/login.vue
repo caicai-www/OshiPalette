@@ -1,13 +1,14 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="6">
-        <v-card rounded="xl" class="pa-10 mt-10 gradient">
-          <h1>testtttttttt</h1>
-        </v-card>
-      </v-col>
-      <v-col cols="6">
-        <v-card class="pa-10 mt-10 bg" elevation="12">
+    <v-card class="pa-10 mt-10 reg-log-bg">
+      <vue-particles
+        id="tsparticles"
+        style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+        :options="useStyle.dynamicOptions"
+        @particles-loaded="particlesLoaded"
+      />
+      <v-row>
+        <v-col cols="6" style="position: relative; z-index: 1">
           <h1 class="text-center">登入</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
@@ -33,16 +34,20 @@
               variant="outlined"
             />
 
-            <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5">登入</v-btn>
+            <v-btn type="submit" :loading="isSubmitting" rounded="xl" elevation="5" class="button"
+              >登入</v-btn
+            >
           </v-form>
-          <p class="mt-5" @click="toRegister">還沒有帳號?</p>
-        </v-card>
-      </v-col>
-    </v-row>
+          <p class="mt-5 text-hover" @click="toRegister">還沒有帳號?</p>
+        </v-col>
+        <v-col cols="6"> </v-col>
+      </v-row>
+    </v-card>
   </v-container>
 </template>
 
 <script setup>
+import { useThemeStore } from '@/stores/style'
 import { useForm, useField } from 'vee-validate'
 import validator from 'validator'
 import * as yup from 'yup'
@@ -55,6 +60,7 @@ const { api } = useAxios()
 const router = useRouter()
 const createSnackbar = useSnackbar()
 const user = useUserStore()
+const useStyle = useThemeStore()
 
 const schema = yup.object({
   account: yup

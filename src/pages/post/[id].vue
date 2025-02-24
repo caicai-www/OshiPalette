@@ -26,10 +26,16 @@
                 <v-chip v-for="tag in post.tags" :key="tag" class="ma-2">{{ tag }}</v-chip>
                 <!--  新增收藏 -->
 
-                <v-btn v-if="!isFavorite" prepend-icon="mdi-heart-plus" @click="addFavorite"
+                <v-btn
+                  v-if="!isFavorite"
+                  prepend-icon="mdi-heart-plus"
+                  class="button"
+                  @click="toggleFavorites"
                   >新增至我的收藏</v-btn
                 >
-                <v-btn v-else prepend-icon="mdi-heart-plus">從我的收藏移除</v-btn>
+                <v-btn v-else prepend-icon="mdi-heart-minus" class="button" @click="toggleFavorites"
+                  >從我的收藏移除</v-btn
+                >
               </v-col>
             </v-row>
             <v-divider></v-divider>
@@ -58,7 +64,7 @@
                 label="新增留言"
               >
               </v-textarea
-              ><v-btn type="submit" :loading="isSubmitting">送出</v-btn>
+              ><v-btn type="submit" :loading="isSubmitting" class="button">送出</v-btn>
             </v-form>
           </v-card>
         </v-col>
@@ -201,15 +207,19 @@ getReply()
 
 // 收藏區
 
-console.log(user.favorite)
+// console.log(user.favorite)
 
 const isFavorite = computed(() => {
-  return user.favorite.some((fav) => fav.post === post.value._id)
+  return (
+    user.favorite &&
+    Array.isArray(user.favorite) &&
+    user.favorite.some((fav) => fav.post === post.value._id)
+  )
 })
 
-console.log(isFavorite)
+// console.log(isFavorite)
 
-const addFavorite = async () => {
+const toggleFavorites = async () => {
   if (!user.isLoggedIn) {
     createSnackbar({
       text: '尚未登入，請先登入',
@@ -222,15 +232,16 @@ const addFavorite = async () => {
   }
 
   // 確認是否有收藏過
-  const favoritePostIds = user.favorite?.map((fav) => fav.post) || []
+  // const favoritePostIds = user.favorite?.map((fav) => fav.post) || []
 
-  if (favoritePostIds.includes(post.value._id)) {
-    createSnackbar({
-      text: '此篇貼文已經收藏了!',
-      snackbarProps: { color: 'red' },
-    })
-    return
-  }
+  // if (favoritePostIds.includes(post.value._id)) {
+  //   createSnackbar({
+  //     text: '此篇貼文已經收藏了!',
+  //     snackbarProps: { color: 'red' },
+  //   })
+  //   return
+  // }
+  // console.log('favoritePostIds:', favoritePostIds)
 
   try {
     const { data } = await apiAuth.patch('user/favorites', {
@@ -241,13 +252,13 @@ const addFavorite = async () => {
     console.log(user.favorite)
 
     createSnackbar({
-      text: '收藏成功',
+      text: isFavorite.value ? '收藏成功' : '已從我的收藏移除',
       snackbarProps: {
         color: 'info',
       },
     })
   } catch (error) {
-    console.log('pages.post.[id].addFavorite:', error)
+    console.log('pages.post.[id].toggleFavorites:', error)
     createSnackbar({
       text: error?.response?.data?.message || '未知錯誤',
       snackbarProps: {

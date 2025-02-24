@@ -23,12 +23,12 @@
             <v-btn rounded="xl" class="button" @click="openDialog(null)">新增貼文</v-btn>
           </v-col>
           <v-col cols="12" md="10">
-            <color-option></color-option>
+            <color-option @color-selected="filterPostsByColor"></color-option>
           </v-col>
         </v-row>
 
         <v-row class="mt-5">
-          <v-col v-for="post in posts" :key="post._id" cols="12" md="3">
+          <v-col v-for="post in filteredPosts" :key="post._id" cols="12" md="3">
             <post-card v-bind="post"></post-card>
           </v-col>
         </v-row>
@@ -286,6 +286,7 @@ const getPost = async () => {
   try {
     const { data } = await apiAuth.get('/post')
     posts.value.push(...data.result)
+    filteredPosts.value.push(...data.result)
     // console.log(data.result)
   } catch (error) {
     console.log('pages.user.oshigram.getPost', error)
@@ -427,6 +428,23 @@ const getFavorite = async () => {
 }
 
 getFavorite()
+
+// 過濾顏色
+const filteredPosts = ref([])
+const filterPostsByColor = (color) => {
+  // console.log('選擇的顏色:', color) // 確保選擇顏色有傳進來
+  if (!color) {
+    filteredPosts.value = [...posts.value]
+  } else if (color === 'all') {
+    filteredPosts.value = [...posts.value]
+  } else {
+    filteredPosts.value = posts.value.filter(
+      (post) => post.colors?.toLowerCase() === color.toLowerCase(),
+    )
+  }
+  // console.log('過濾後的貼文:', filteredPosts.value) // 檢查過濾後的結果
+}
+console.log('所有貼文', filteredPosts)
 </script>
 
 <style scoped>
@@ -448,12 +466,6 @@ getFavorite()
 }
 
 .selected {
-  background: rgba(189, 189, 189, 0.3);
-  backdrop-filter: hue-rotate(100deg) saturate(100%);
-}
-
-.button {
-  border: 1px solid rgba(0, 0, 0, 0.2);
   background: rgba(189, 189, 189, 0.3);
   backdrop-filter: hue-rotate(100deg) saturate(100%);
 }

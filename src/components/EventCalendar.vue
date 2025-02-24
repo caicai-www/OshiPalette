@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <vue-cal
-      style="height: 700px"
+      style="height: 1000px"
       :time="false"
       :selected-date="today"
       :disable-views="['years', 'year', 'week', 'day']"
@@ -40,7 +40,7 @@ const emit = defineEmits(['updateEvents'])
 const getEvent = async () => {
   try {
     const { data } = await api.get('/calendar')
-
+    console.log(data.result)
     events.value = data.result.map((event) => ({
       start: new Date(event.start).toISOString().split('T')[0],
       end: new Date(event.end).toISOString().split('T')[0],
@@ -73,22 +73,3 @@ const onEventClick = (event) => {
   router.push('/calendar/' + event.id)
 }
 </script>
-
-<style>
-.vuecal--month-view .vuecal__cell {
-  height: 80px;
-}
-
-.vuecal--month-view .vuecal__cell-content {
-  justify-content: flex-start;
-  height: 100%;
-  align-items: flex-end;
-}
-
-.vuecal--month-view .vuecal__cell-date {
-  padding: 4px;
-}
-.vuecal--month-view .vuecal__no-event {
-  display: none;
-}
-</style>
