@@ -27,8 +27,8 @@
           </v-col>
         </v-row>
 
-        <v-row class="mt-5">
-          <v-col v-for="post in filteredPosts" :key="post._id" cols="12" md="3">
+        <v-row class="mt-5 justify-center">
+          <v-col v-for="post in filteredPosts" :key="post._id" cols="12" md="2" class="mx-2 my-2">
             <post-card v-bind="post"></post-card>
           </v-col>
         </v-row>
@@ -38,7 +38,13 @@
       <v-tabs-window-item value="collection">
         <v-card-text>這是收藏頁面的內容</v-card-text>
         <v-row class="mt-5">
-          <v-col v-for="favorite in favorites" :key="favorite._id" cols="12" md="4" lg="3">
+          <v-col
+            v-for="favorite in favorites"
+            :key="favorite._id"
+            cols="12"
+            md="2"
+            class="mx-2 my-2"
+          >
             <post-card v-bind="favorite.post"></post-card>
           </v-col>
         </v-row>
@@ -394,6 +400,7 @@ const submit = handleSubmit(async (values) => {
     await apiAuth.post('/post', fd)
 
     posts.value.splice(0, posts.value.length)
+    filteredPosts.value.splice(0, filteredPosts.value.length)
     getPost()
     createSnackbar({
       text: '成功新增貼文',

@@ -9,8 +9,29 @@
       :show-all-day-events="true"
       :events-on-month-view="true"
       :events="events"
+      :on-event-click="openDialog"
     >
     </vue-cal>
+
+    <v-dialog v-model="dialog.open" max-width="500px">
+      <v-card class="bg pa-10" rounded="xl">
+        <v-img :src="dialog.image" class="rounded-lg" cover></v-img>
+        <p>活動名稱: {{ dialog.title }}</p>
+        <p>活動時間: {{ dialog.start }}</p>
+        <p>
+          活動地點: {{ dialog.location }}
+          <a
+            :href="
+              'https://www.google.com/maps/search/?api=1&query=' +
+              encodeURIComponent(dialog.location)
+            "
+            target="_blank"
+          >
+            <v-icon>mdi-map-marker</v-icon>
+          </a>
+        </p>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -45,6 +66,26 @@ const getEvent = async () => {
 }
 
 getEvent()
+
+const dialog = ref({
+  open: false,
+  id: '',
+  title: '',
+  start: '',
+  location: '',
+  image: '',
+})
+
+const openDialog = (item) => {
+  if (item) {
+    dialog.value.id = item._id
+    dialog.value.start = item.start.toLocaleString().split('T')[0].slice(0, 9)
+    dialog.value.title = item.title
+    dialog.value.location = item.location
+    dialog.value.image = item.image
+  }
+  dialog.value.open = true
+}
 </script>
 
 <style>

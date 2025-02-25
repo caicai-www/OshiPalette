@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent class="bg-info">
+  <v-navigation-drawer permanent class="navi_bg">
     <v-list>
       <v-list-item :title="user.account"> </v-list-item>
       <v-divider></v-divider>
@@ -11,10 +11,11 @@
         :prepend-icon="nav.icon"
         :title="nav.text"
         :to="nav.to"
+        class="mb-5 mx-5 list_bg"
       ></v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <v-main>
+  <v-main :style="useStyle.containerStyle">
     <router-view> </router-view>
   </v-main>
 </template>
@@ -22,6 +23,9 @@
 <script setup>
 import { computed } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { useThemeStore } from '@/stores/style'
+
+const useStyle = useThemeStore()
 
 const user = useUserStore()
 const navs = computed(() => {

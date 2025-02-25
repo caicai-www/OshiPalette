@@ -1,6 +1,6 @@
 <template>
   <router-link :to="'/post/' + _id">
-    <v-card :style="{ boxShadow: `0px 3px 10px ${colors}` }" class="mx-auto polaroid" height="100%">
+    <v-card :class="['mx-auto', 'polaroid', colors]" height="100%">
       <v-img :src="image" cover class="mx-5 mt-7 mb-2 photo"></v-img>
       <v-card-title>{{ title }}</v-card-title>
       <v-chip v-for="tag in tags" :key="tag" class="ma-2" size="s">{{ tag }}</v-chip>
@@ -46,5 +46,41 @@ defineProps({
 .photo {
   border-radius: 10px;
   box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.2);
+}
+
+.red {
+  box-shadow: 0px 0px 15px 6px #ffa6a670;
+}
+
+.pink {
+  box-shadow: 0px 0px 15px 6px #f9a8d470;
+}
+
+.purple {
+  box-shadow: 0px 0px 15px 6px #decfff70;
+}
+
+.blue {
+  box-shadow: 0px 0px 15px 6px #cff9ff70;
+}
+
+.yellow {
+  box-shadow: 0px 0px 15px 6px #fffed570;
+}
+
+.green {
+  box-shadow: 0px 0px 15px 6px #b9ffb370;
+}
+
+.orange {
+  box-shadow: 0px 0px 15px 6px #ffbf9570;
+}
+
+.white {
+  box-shadow: 0px 0px 15px 6px #ececec70;
+}
+
+.black {
+  box-shadow: 0px 0px 15px 6px #33333370;
 }
 </style>

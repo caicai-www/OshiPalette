@@ -3,8 +3,8 @@
     <!-- 活動資訊區 -->
     <v-card class="glass-card">
       <v-row>
-        <v-col cols="12" md="7">
-          <v-img :src="calendar.image" cover></v-img>
+        <v-col cols="12" md="7" class="d-flex justify-center align-start">
+          <img :src="calendar.image" class="img" @load="onImageLoad" />
         </v-col>
         <v-col cols="12" md="5">
           <v-card-item>
@@ -17,13 +17,16 @@
               <v-icon icon="mdi-map-marker"></v-icon>地點: {{ calendar.location }}
             </v-card-text>
             <v-btn v-if="!isJoin" class="button rounded-xl ma-5" @click="toggleEvent"
-              >參加活動</v-btn
+              >將活動加進行事曆</v-btn
             >
             <v-btn v-else class="button rounded-xl ma-5" @click="toggleEvent">取消參加活動</v-btn>
           </v-card-item>
+          <p v-if="isPortrait" class="ma-10 description">{{ calendar.description }}</p>
+        </v-col>
+        <v-col v-if="!isPortrait" cols="12" md="12">
+          <p class="ma-10 description">{{ calendar.description }}</p>
         </v-col>
       </v-row>
-      <p class="ma-10">{{ calendar.description }}</p>
     </v-card>
 
     <!-- 討論串區 -->
@@ -413,7 +416,7 @@ const toggleEvent = async () => {
     console.log(user.calendar)
 
     createSnackbar({
-      text: isJoin.value ? '參加成功' : '已取消參加活動',
+      text: isJoin.value ? '已將活動加進我的行事曆' : '已取消參加活動',
       snackbarProps: {
         color: 'info',
       },
@@ -435,6 +438,19 @@ const toggleEvent = async () => {
     })
   }
 }
+
+// 判斷圖片是否為長的
+const isPortrait = ref(false)
+
+const onImageLoad = (event) => {
+  const img = event.target
+  if (img) {
+    isPortrait.value = img.naturalHeight > img.naturalWidth
+    console.log(img.naturalHeight)
+    console.log(img.naturalWidth)
+    console.log(isPortrait.value)
+  }
+}
 </script>
 
 <style scoped>
@@ -444,5 +460,15 @@ const toggleEvent = async () => {
   border-radius: 5px 5px 15px 30px;
   padding: 16px;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.description {
+  white-space: pre-wrap;
+}
+
+.img {
+  object-fit: contain;
+  max-height: 100%;
+  max-width: 100%;
 }
 </style>

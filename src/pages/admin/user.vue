@@ -11,9 +11,10 @@
           :headers="headers"
           :search="search"
           :filter-keys="['account', 'name']"
+          class="glass-card pa-4"
         >
           <template #top>
-            <v-toolbar>
+            <v-toolbar class="glass-card">
               <v-text-field
                 v-model="search"
                 variant="underlined"
@@ -54,10 +55,10 @@
     </v-row>
   </v-container>
 
-  <v-dialog v-model="dialog.open">
+  <v-dialog v-model="dialog.open" max-width="1000px">
     <v-form :disabled="isSubmitting" @submit.prevent="submit">
-      <v-card>
-        <v-card-title>編輯會員</v-card-title>
+      <v-card :style="useStyle.containerStyle" class="bg pa-10 rounded-xl">
+        <v-card-title class="list_bg text-center">編輯會員</v-card-title>
         <v-card-text>
           <v-text-field v-model="account.value.value" label="帳號" readonly> </v-text-field>
           <v-text-field v-model="email.value.value" label="信箱" readonly> </v-text-field>
@@ -91,9 +92,11 @@ import { computed, reactive, ref } from 'vue'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
+import { useThemeStore } from '@/stores/style'
 
 const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
+const useStyle = useThemeStore()
 
 const users = reactive([])
 const headers = computed(() => {
@@ -150,7 +153,7 @@ const openDialog = (item) => {
     account.value.value = item.account
     email.value.value = item.email
     name.value.value = item.name
-    birthdate.value.value = item.birthdate
+    birthdate.value.value = item.birthdate.split('T')[0]
     post.value.value = item.post
     reply.value.value = item.reply
   }
@@ -213,7 +216,11 @@ const getUsers = async () => {
 getUsers()
 </script>
 
-<style scoped></style>
+<style scoped>
+.bg {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+</style>
 
 <route lang="yaml">
 meta:

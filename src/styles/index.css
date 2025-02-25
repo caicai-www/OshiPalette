@@ -11,6 +11,22 @@ body {
   background-blend-mode: hard-light;
 }
 
+.navi_bg {
+  background: url('@/assets/navi_bg.png') center center;
+}
+
+.list_bg {
+  background: url('@/assets/list.jpg'),
+    linear-gradient(55deg, hsl(0, 100%, 83%), #f9a8d4, #decfff, #cff9ff, #b9ffb3, #fffcaf, #ffbf95);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-origin: padding-box;
+  background-blend-mode: hard-light;
+  mask: url('@/assets/list_mask.png') no-repeat center center;
+  mask-size: cover;
+}
+
 .glass-card {
   background: rgba(207, 207, 207, 0.2);
   backdrop-filter: hue-rotate(80deg) saturate(-20%);
@@ -63,14 +79,13 @@ body {
   background: rgba(207, 207, 207, 0.2);
   backdrop-filter: hue-rotate(120deg) saturate(100%);
   border-radius: 30px;
-  padding: 16px;
   box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.1);
 }
 
 .vuecal__event-title {
   overflow: hidden; /* 超出範圍的部分隱藏 */
   text-overflow: ellipsis; /* 使用省略號顯示超出部分 */
-  max-height: 2.5rem; /* 讓標題區域可以自適應大小 */
+  max-height: 2.3rem; /* 讓標題區域可以自適應大小 */
 }
 
 .vuecal__cell {

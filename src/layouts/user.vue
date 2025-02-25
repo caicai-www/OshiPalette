@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-app-bar v-if="isMobile" app color="info" dark>
+    <v-app-bar v-if="isMobile" app color="bg" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
 
@@ -20,7 +20,7 @@
         ></v-list-item>
       </v-list>
     </v-navigation-drawer>
-    <v-main :style="useStyle.containerStyle" class="bg-watercolor">
+    <v-main :style="useStyle.containerStyle">
       <router-view> </router-view>
     </v-main>
   </v-app>
@@ -61,21 +61,5 @@ onMounted(() => {
   background: url('@/assets/bg.jpg');
 
   background-blend-mode: hard-light;
-}
-
-.navi_bg {
-  background: url('@/assets/navi_bg.png') center center;
-}
-
-.list_bg {
-  background: url('@/assets/list.jpg'),
-    linear-gradient(55deg, hsl(0, 100%, 83%), #f9a8d4, #decfff, #cff9ff, #b9ffb3, #fffcaf, #ffbf95);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-origin: padding-box;
-  background-blend-mode: hard-light;
-  mask: url('@/assets/list_mask.png') no-repeat center center;
-  mask-size: cover;
 }
 </style>

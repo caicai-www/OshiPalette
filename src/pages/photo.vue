@@ -5,8 +5,8 @@
     <color-option @color-selected="filterPostsByColor"></color-option>
     <v-divider></v-divider>
 
-    <v-row class="mt-5">
-      <v-col v-for="post in filteredPosts" :key="post._id" cols="12" md="4" lg="3">
+    <v-row class="mt-5 justify-center">
+      <v-col v-for="post in filteredPosts" :key="post._id" cols="12" md="2" class="ma-3">
         <post-card v-bind="post"></post-card>
       </v-col>
     </v-row>

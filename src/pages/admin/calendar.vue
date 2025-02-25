@@ -6,10 +6,10 @@
       </v-col>
       <v-divider></v-divider>
       <v-col cols="12">
-        <v-data-table :items="calendar" :headers="headers" :search="search">
+        <v-data-table class="glass-card pa-4" :items="calendar" :headers="headers" :search="search">
           <template #top>
-            <v-toolbar>
-              <v-btn @click="openDialog(null)">新增活動</v-btn>
+            <v-toolbar class="glass-card">
+              <v-btn class="button rounded-xl" @click="openDialog(null)">新增活動</v-btn>
               <v-text-field
                 v-model="search"
                 variant="underlined"
@@ -44,10 +44,12 @@
     </v-row>
   </v-container>
 
-  <v-dialog v-model="dialog.open" persistent>
+  <v-dialog v-model="dialog.open" persistent max-width="1000px">
     <v-form :disabled="isSubmitting" @submit.prevent="submit">
-      <v-card>
-        <v-card-title>{{ dialog.id ? '編輯活動' : '新增活動' }}</v-card-title>
+      <v-card :style="useStyle.containerStyle" class="bg pa-10 rounded-xl">
+        <v-card-title class="list_bg text-center">{{
+          dialog.id ? '編輯活動' : '新增活動'
+        }}</v-card-title>
         <v-card-text>
           <VueFileAgent
             ref="fileAgent"
@@ -63,7 +65,7 @@
             }"
           >
           </VueFileAgent>
-          <!-- 沒有跑出錯誤訊息 -->
+
           <v-text-field
             v-model="start.value.value"
             type="date"
@@ -78,6 +80,7 @@
             :error-messages="end.errorMessage.value"
           >
           </v-text-field>
+
           <v-text-field
             v-model="title.value.value"
             type="text"
@@ -90,6 +93,7 @@
             v-model="location.value.value"
             label="活動地點"
             :items="[
+              '台北大巨蛋',
               '台北小巨蛋',
               '台北音樂流行中心',
               'TICC 台北國際會議中心',
@@ -109,8 +113,8 @@
           </v-textarea>
         </v-card-text>
         <v-card-actions>
-          <v-btn @click="closeDialog">取消</v-btn>
-          <v-btn type="submit" :loading="isSubmitting">送出</v-btn>
+          <v-btn class="button rounded-xl" @click="closeDialog">取消</v-btn>
+          <v-btn type="submit" :loading="isSubmitting" class="button rounded-xl">送出</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -123,9 +127,12 @@ import { computed, ref } from 'vue'
 import { useSnackbar } from 'vuetify-use-dialog'
 import { useForm, useField } from 'vee-validate'
 import * as yup from 'yup'
+import { useThemeStore } from '@/stores/style'
+import { VueFileAgent } from '@boindil/vue-file-agent-next'
 
 const { apiAuth } = useAxios()
 const createSnackbar = useSnackbar()
+const useStyle = useThemeStore()
 
 const calendar = ref([])
 const headers = computed(() => {
@@ -243,7 +250,7 @@ const submit = handleSubmit(async (values) => {
       },
     })
   } catch (error) {
-    console.log('page.user.submit:', error)
+    console.log('page.user.calendar.submit:', error)
     createSnackbar({
       text: '更新失敗',
       snackbarProps: {
@@ -253,6 +260,12 @@ const submit = handleSubmit(async (values) => {
   }
 })
 </script>
+
+<style scoped>
+.bg {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+</style>
 
 <route lang="yaml">
 meta:

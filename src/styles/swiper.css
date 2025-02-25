@@ -1,3 +1,6 @@
+#app {
+  height: 100%;
+}
 html,
 body {
   position: relative;
@@ -6,7 +9,11 @@ body {
 
 body {
   background: #eee;
-
+  font-family:
+    Helvetica Neue,
+    Helvetica,
+    Arial,
+    sans-serif;
   font-size: 14px;
   color: #000;
   margin: 0;
@@ -15,7 +22,7 @@ body {
 
 .swiper {
   width: 100%;
-  height: 500px;
+  height: 100%;
 }
 
 .swiper-slide {
@@ -31,6 +38,97 @@ body {
 
 .swiper-slide img {
   display: block;
+  width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
+body {
+  background: #000;
+  color: #000;
+}
+
+.swiper {
+  width: 100%;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.swiper-slide {
+  background-size: cover;
+  background-position: center;
+}
+
+.mySwiper2 {
+  height: 800px;
+  width: 100%;
+}
+
+.mySwiper {
+  height: 200px;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+
+.mySwiper .swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+}
+
+.mySwiper .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/*
+html,
+body {
+  position: relative;
+  height: 100%;
+}
+
+body {
+  background: url('@/assets/bg.jpg'), linear-gradient(130deg, #d4d4d4, #ffdac1);
+  background-position: center;
+  background-repeat: repeat;
+  background-blend-mode: hard-light;
+
+  font-size: 14px;
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.swiper {
+  width: 100%;
+  height: 500px;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: url('@/assets/bg.jpg'), linear-gradient(130deg, #d4d4d4, #ffdac1);
+  background-position: center;
+  background-repeat: repeat;
+  background-blend-mode: hard-light;
+
+  /* Center slide text vertically */
+/* display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+}
+ */

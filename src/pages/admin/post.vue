@@ -6,7 +6,7 @@
       </v-col>
       <v-divider></v-divider>
       <v-col cols="12">
-        <v-data-table :items="posts" :headers="headers">
+        <v-data-table :items="posts" :headers="headers" class="glass-card pa-4">
           <template #[`item.image`]="{ value }">
             <v-img :src="value" height="50"></v-img>
           </template>
