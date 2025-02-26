@@ -1,17 +1,21 @@
 <template>
   <v-container>
     <h1 class="text-center justify-center py-6">我的活動月曆</h1>
-    <vue-cal
-      style="height: 700px"
-      :time="false"
-      :selected-date="today"
-      :disable-views="['years', 'year', 'week', 'day']"
-      :show-all-day-events="true"
-      :events-on-month-view="true"
-      :events="events"
-      :on-event-click="openDialog"
-    >
-    </vue-cal>
+    <v-row class="justify-center">
+      <v-col cols="12" md="10">
+        <vue-cal
+          style="height: 700px"
+          :time="false"
+          :selected-date="today"
+          :disable-views="['years', 'year', 'week', 'day']"
+          :show-all-day-events="true"
+          :events-on-month-view="true"
+          :events="events"
+          :on-event-click="openDialog"
+        >
+        </vue-cal>
+      </v-col>
+    </v-row>
 
     <v-dialog v-model="dialog.open" max-width="500px">
       <v-card class="bg pa-10" rounded="xl">

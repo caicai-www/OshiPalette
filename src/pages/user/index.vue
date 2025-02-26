@@ -6,8 +6,8 @@
       <v-card class="glass-card pa-4">
         <v-row>
           <!-- 左側：大頭貼 -->
-          <v-col cols="12" md="3" class="d-flex justify-center">
-            <v-img cover :src="usericon"></v-img>
+          <v-col cols="12" md="3">
+            <v-img :src="usericon" max-height="250px" cover></v-img>
           </v-col>
 
           <!-- 右側：個人資訊 -->
@@ -36,11 +36,6 @@
               >
                 <template #append> <v-icon class="cursor-pointer"> </v-icon> </template>
               </v-text-field>
-              <!-- <v-date-input
-                v-model="birthdate.value.value"
-                label="生日"
-                prepend-icon=""
-              ></v-date-input> -->
             </v-card-text>
           </v-col>
         </v-row>

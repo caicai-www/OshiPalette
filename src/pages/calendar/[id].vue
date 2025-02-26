@@ -12,9 +12,18 @@
             <v-card-text>
               <v-icon icon="mdi-calendar"></v-icon>日期: {{ calendar.start }}
             </v-card-text>
-            <v-card-text> <v-icon icon="mdi-clock"></v-icon>時間: {{ calendar.time }} </v-card-text>
+
             <v-card-text>
               <v-icon icon="mdi-map-marker"></v-icon>地點: {{ calendar.location }}
+              <a
+                :href="
+                  'https://www.google.com/maps/search/?api=1&query=' +
+                  encodeURIComponent(calendar.location)
+                "
+                target="_blank"
+              >
+                <v-icon>mdi-map-marker</v-icon>
+              </a>
             </v-card-text>
             <v-btn v-if="!isJoin" class="button rounded-xl ma-5" @click="toggleEvent"
               >將活動加進行事曆</v-btn

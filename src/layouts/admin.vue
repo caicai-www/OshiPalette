@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent class="navi_bg">
+  <v-navigation-drawer permanent class="navi_bg position-fixed">
     <v-list>
       <v-list-item :title="user.account"> </v-list-item>
       <v-divider></v-divider>

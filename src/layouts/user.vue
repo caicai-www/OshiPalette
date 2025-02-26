@@ -1,10 +1,16 @@
 <template>
   <v-app>
-    <v-app-bar v-if="isMobile" app color="bg" dark>
+    <v-app-bar v-if="isMobile" app class="bg" dark>
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" app :permanent="!isMobile" class="navi_bg">
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      :permanent="!isMobile"
+      class="navi_bg position-fixed"
+      fix
+    >
       <v-list>
         <v-list-item :title="user.account"> </v-list-item>
         <v-divider></v-divider>
@@ -58,8 +64,9 @@ onMounted(() => {
 
 <style scoped>
 .bg {
-  background: url('@/assets/bg.jpg');
-
+  background: url('@/assets/bg.jpg'), linear-gradient(130deg, #d4d4d4, #ffdac1);
+  background-position: center;
+  background-repeat: repeat;
   background-blend-mode: hard-light;
 }
 </style>

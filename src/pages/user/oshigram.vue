@@ -2,7 +2,7 @@
   <v-container class="text-center">
     <h1 class="text-center justify-center py-6">我的照片牆/收藏</h1>
 
-    <v-tabs v-model="currentTab" color="black" align-tabs="start">
+    <v-tabs v-model="currentTab" align-tabs="start">
       <v-tab
         v-for="item in tabs"
         :key="item.text"
@@ -11,18 +11,17 @@
         stacked
         class="tab-title"
         selected-class="selected"
-        >{{ item.title }}</v-tab
-      >
+        >{{ item.title }}
+      </v-tab>
     </v-tabs>
 
     <v-tabs-window v-model="currentTab" class="tab-window">
       <!-- 照片頁面-->
       <v-tabs-window-item value="photo">
         <v-row>
-          <v-col cols="12" md="1">
+          <v-col cols="12">
             <v-btn rounded="xl" class="button" @click="openDialog(null)">新增貼文</v-btn>
-          </v-col>
-          <v-col cols="12" md="10">
+
             <color-option @color-selected="filterPostsByColor"></color-option>
           </v-col>
         </v-row>
@@ -456,7 +455,7 @@ console.log('所有貼文', filteredPosts)
 
 <style scoped>
 .tab-window {
-  background: rgba(189, 189, 189, 0.3);
+  background: rgba(189, 189, 189, 0.1);
   border: 1px solid rgba(0, 0, 0, 0.2);
   backdrop-filter: hue-rotate(80deg) saturate(-20%) blur(15px);
   border-radius: 0px 10px 30px 30px;

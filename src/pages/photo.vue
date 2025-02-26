@@ -6,7 +6,14 @@
     <v-divider></v-divider>
 
     <v-row class="mt-5 justify-center">
-      <v-col v-for="post in filteredPosts" :key="post._id" cols="12" md="2" class="ma-3">
+      <v-col
+        v-for="post in filteredPosts"
+        v-show="post.display"
+        :key="post._id"
+        cols="12"
+        md="2"
+        class="ma-3"
+      >
         <post-card v-bind="post"></post-card>
       </v-col>
     </v-row>
