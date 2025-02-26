@@ -1,5 +1,272 @@
 <template>
   <div id="app">
+    <v-card height="500px"
+      ><vue-particles
+        id="tsparticles"
+        url="http://foo.bar/particles.json"
+        @particles-loaded="particlesLoaded" />
+
+      <vue-particles id="tsparticles" :options="dynamicOptions" @particles-loaded="particlesLoaded"
+    /></v-card>
+  </div>
+
+  <!-- https://vuetifyjs.com/en/components/sheets/#color -->
+
+<v-container class="bg-info mt-10" fluid>
+ <v-row class="flex-child">
+
+  <v-col cols="12" md="4" class="bg-pink d-flex">
+
+    <v-row class="ma-n3"  >
+    <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="green-lighten-3"
+              height="150"
+            >
+             <v-img
+        src="@/assets/banner.png"
+             max-width="100%"
+            cover
+      ></v-img>
+
+            </v-sheet>
+          </v-col>
+
+          <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="yellow-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #3: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+           <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="yellow-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #3: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+           <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="yellow-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #3: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+            <v-col cols="12">
+            <v-sheet
+              class="d-flex"
+              color="red-lighten-3"
+              height="250"
+            >
+              <sheet-footer>
+                #5: (2r x 2c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+    </v-row>
+  </v-col>
+
+  <v-col cols="12" md="4" class="bg-purple d-flex">
+
+    <v-row class="ma-n3"  >
+    <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="green-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #2: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+          <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="yellow-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #3: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+           <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="yellow-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #3: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+           <v-col cols="3">
+            <v-sheet
+              class="d-flex"
+              color="yellow-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #3: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+            <v-col cols="12">
+            <v-sheet
+              class="d-flex"
+              color="red-lighten-3"
+              height="250"
+            >
+              <sheet-footer>
+                #5: (2r x 2c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+    </v-row>
+  </v-col>
+
+  <v-col cols="12" md="4" class="bg-blue d-flex">
+     <v-col cols="12">
+      <v-sheet
+          class="d-flex"
+          color="grey-lighten-3"
+          height="424"
+        >
+          <sheet-footer>
+            #1: (3r x 2c)
+          </sheet-footer>
+        </v-sheet>
+    </v-col>
+
+  </v-col>
+ </v-row>
+</v-container>
+
+<v-container>
+    <v-row class="flex-child text-subtitle-2">
+      <v-col
+        class="d-flex"
+        cols="12"
+        md="4"
+      >
+        <v-sheet
+          class="d-flex"
+          color="grey-lighten-3"
+          height="424"
+        >
+          <sheet-footer>
+            #1: (3r x 2c)
+          </sheet-footer>
+        </v-sheet>
+      </v-col>
+
+      <v-col
+        class="d-flex"
+        cols="12"
+        md="4"
+      >
+        <v-row class="ma-n3">
+          <v-col cols="6">
+            <v-sheet
+              class="d-flex"
+              color="green-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #2: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+          <v-col cols="6">
+            <v-sheet
+              class="d-flex"
+              color="yellow-lighten-3"
+              height="150"
+            >
+              <sheet-footer>
+                #3: (1r x 1c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+
+          <v-col cols="12">
+            <v-sheet
+              class="d-flex"
+              color="red-lighten-3"
+              height="250"
+            >
+              <sheet-footer>
+                #5: (2r x 2c)
+              </sheet-footer>
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-col>
+
+      <v-col
+        cols="6"
+        md="2"
+      >
+        <v-sheet
+          class="d-flex"
+          color="teal-lighten-3"
+          height="300"
+        >
+          <sheet-footer>
+            #4: (2r x 1c)
+          </sheet-footer>
+        </v-sheet>
+      </v-col>
+
+      <v-col
+        class="d-flex"
+        cols="6"
+        md="2"
+      >
+        <v-sheet
+          class="d-flex mt-auto"
+          color="purple-lighten-3"
+          height="300"
+        >
+          <sheet-footer>
+            #6: (2r x 1c)
+          </sheet-footer>
+        </v-sheet>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+
+
+
+
+<!-- <template>
+  <div id="app">
     <vue-particles
       id="tsparticles"
       :particles-loaded="particlesLoaded"
@@ -82,20 +349,9 @@
       }"
     />
   </div>
-</template>
-
-<!-- <template>
-  <div id="app">
-    <v-card height="500px"
-      ><vue-particles
-        id="tsparticles"
-        url="http://foo.bar/particles.json"
-        @particles-loaded="particlesLoaded" />
-
-      <vue-particles id="tsparticles" :options="dynamicOptions" @particles-loaded="particlesLoaded"
-    /></v-card>
-  </div>
 </template> -->
+
+
 
 <script setup>
 import { ref } from 'vue'
