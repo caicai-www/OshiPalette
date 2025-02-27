@@ -16,6 +16,14 @@ import { loadSlim } from '@tsparticles/slim'
 
 import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
 
+// Import Swiper styles
+import 'swiper/css'
+import 'swiper/css/effect-coverflow'
+import 'swiper/css/pagination'
+import 'swiper/css/free-mode'
+import 'swiper/css/navigation'
+import 'swiper/css/thumbs'
+
 import '@/styles/index.css'
 
 export function registerPlugins(app) {

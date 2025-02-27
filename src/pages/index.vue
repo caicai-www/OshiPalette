@@ -49,7 +49,7 @@
                     fill="rgba(0, 0, 0, 0.6)"
                     filter="url(#watercolor)"
                   >
-                    先抖一下
+                    文字還沒好
                   </text>
                 </svg>
               </template>
@@ -64,6 +64,10 @@
             >
               <template v-if="item.type === 'image'">
                 <v-img :src="item.value" max-width="100%" cover></v-img>
+              </template>
+
+              <template v-else>
+                <span>文字還沒好</span>
               </template>
             </v-sheet>
           </v-col>
@@ -82,6 +86,9 @@
               <template v-if="item.type === 'image'">
                 <v-img :src="item.value" max-width="100%" cover></v-img>
               </template>
+              <template v-else>
+                <span>文字還沒好</span>
+              </template>
             </v-sheet>
           </v-col>
 
@@ -94,6 +101,9 @@
               <template v-if="item.type === 'image'">
                 <v-img :src="item.value" max-width="100%" cover></v-img>
               </template>
+              <template v-else>
+                <span>文字還沒好</span>
+              </template>
             </v-sheet>
           </v-col>
         </v-row>
@@ -102,7 +112,7 @@
       <v-col cols="12" md="4" class="d-flex ma-n3">
         <v-col cols="12">
           <v-sheet class="d-flex" color="bg-blue" height="774">
-            <sheet-footer> #1: (3r x 2c) </sheet-footer>
+            <sheet-footer> 想放LOGO圖 但還沒好 </sheet-footer>
           </v-sheet>
         </v-col>
       </v-col>
@@ -150,18 +160,9 @@
       <v-timeline align="start" density="dense">
         <v-timeline-item v-for="event in latestEvents" :key="event._id" size="large">
           <template #icon>
-            <v-hover v-slot="{ isHovering, props }">
-              <v-avatar v-bind="props">
-                <v-img :src="event.image" cover></v-img>
-              </v-avatar>
-              <!-- 顯示大圖 -->
-              <v-img
-                v-if="isHovering"
-                :src="event.image"
-                max-width="500px"
-                class="pa-2 mt-2"
-              ></v-img>
-            </v-hover>
+            <v-avatar v-bind="attrs" v-on="on">
+              <v-img :src="event.image" cover></v-img>
+            </v-avatar>
           </template>
 
           <template #opposite>
@@ -181,22 +182,15 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import { useAxios } from '@/composables/axios'
 // Import Swiper Vue.js components
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import { useRouter } from 'vue-router'
 import EventCalendar from '@/components/EventCalendar.vue'
+import '@/styles/homeSwiper.css'
 
 const router = useRouter()
-
-// Import Swiper styles
-import 'swiper/css'
-
-import 'swiper/css/effect-coverflow'
-import 'swiper/css/pagination'
-
-import '@/styles/homeSwiper.css'
 
 // import required modules
 import { EffectCoverflow, Autoplay, Mousewheel } from 'swiper/modules'
@@ -272,6 +266,13 @@ const firstColItems = computed(() => generateItems(4, usedImages))
 const secondColItems = computed(() => generateItems(4, usedImages))
 const thirdColItems = computed(() => generateItems(1, usedImages))
 const fourthColItems = computed(() => generateItems(1, usedImages))
+
+const thumbsSwiper = ref(null)
+
+// 在 mounted 中更新 swiper
+onMounted(() => {
+  thumbsSwiper.value && thumbsSwiper.value.update()
+})
 </script>
 
 <style>

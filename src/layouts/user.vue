@@ -4,13 +4,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
     </v-app-bar>
 
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      :permanent="!isMobile"
-      class="navi_bg position-fixed"
-      fix
-    >
+    <v-navigation-drawer app :permanent="!isMobile" class="navi_bg" fix>
       <v-list>
         <v-list-item :title="user.account"> </v-list-item>
         <v-divider></v-divider>
@@ -39,7 +33,7 @@ import { useThemeStore } from '@/stores/style'
 
 const useStyle = useThemeStore()
 
-const drawer = ref()
+// const drawer = ref()
 const isMobile = ref(false)
 
 const user = useUserStore()

@@ -193,7 +193,27 @@ const submit = handleSubmit(async (values) => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+.swiper {
+  width: 90%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 300px;
+  height: 300px;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+</style>
 
 <route lang="yaml">
 meta:
