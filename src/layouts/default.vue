@@ -1,7 +1,7 @@
 <template>
   <v-toolbar density="comfortable">
-    <v-container fluid class="d-flex align-center gradient-toolbar">
-      <v-btn to="/" :active="false">OshiPalette</v-btn>
+    <v-container fluid class="d-flex align-center bg">
+      <v-btn to="/" :active="false">Oshi Palette</v-btn>
       <v-btn v-for="nav of navs" :key="nav.to" :to="nav.to" :prepend-icon="nav.icon">
         {{ nav.text }}
       </v-btn>
@@ -42,8 +42,7 @@ const createSnackbar = useSnackbar()
 const navs = computed(() => {
   return [
     { to: '/event', text: '活動月曆', icon: ' mdi-calendar-month' },
-    { to: '/item', text: '推活小物', icon: ' mdi-emoticon-kiss-outline' },
-    { to: '/photo', text: '照片牆', icon: ' mdi-image-album' },
+      { to: '/photo', text: '照片牆', icon: ' mdi-image-album' },
   ]
 })
 

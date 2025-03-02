@@ -21,6 +21,36 @@ export const useThemeStore = defineStore('theme', () => {
     return `linear-gradient(${degree}deg, ${selectedColors.join(', ')})`
   })
 
+  const randomColors = computed(() =>
+    Array.from({ length: 5 }, () => {
+      const R = Math.floor(Math.random() * 255)
+      const G = Math.floor(Math.random() * 255)
+      const B = Math.floor(Math.random() * 255)
+      return `rgba(${R},${G},${B},0.1)`
+    })
+  )
+
+  const homeSwiperBg = computed(() => ({
+    backgroundImage: `linear-gradient(180deg,rgba(255,218,193,0.1),${randomColors.value[0]})`,
+    backgroundBlendMode: 'hard-light',
+
+  }))
+
+  const homeCalendarBg = computed(() => ({
+    backgroundImage: `linear-gradient(180deg, ${randomColors.value[0]} 0%,${randomColors.value[1]} 50%,   ${randomColors.value[2]} 100%  )`,
+    backgroundBlendMode: 'hard-light',
+  }))
+
+  const homeNewsBg = computed(() => ({
+    backgroundImage: `linear-gradient(180deg, ${randomColors.value[2]} 0%,${randomColors.value[3]} 50%,   ${randomColors.value[4]} 100%  )`,
+    backgroundBlendMode: 'hard-light',
+  }))
+
+  const footerBg = computed(() => ({
+    background: randomColors.value[4],
+    backgroundBlendMode: 'hard-light'
+  }))
+
   const containerStyle = computed(() => ({
     backgroundImage: `url(${bgImage}), ${randomGradient.value}`,
     backgroundSize: 'cover',
@@ -523,5 +553,5 @@ export const useThemeStore = defineStore('theme', () => {
     },
   }))
 
-  return { containerStyle, dynamicOptions }
+  return { containerStyle, dynamicOptions, homeCalendarBg, homeNewsBg, homeSwiperBg, footerBg }
 })

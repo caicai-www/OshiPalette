@@ -59,6 +59,10 @@ body {
   text-decoration: underline;
 }
 
+.homeBgColor {
+  background: rgba(255, 182, 182, 0.2);
+  backdrop-filter: hue-rotate(20deg);
+}
 /* vue-cal */
 /* .vuecal {
   background: rgba(207, 207, 207, 0.3);

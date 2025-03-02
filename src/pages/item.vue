@@ -1,278 +1,103 @@
+<script setup>
+import { onMounted, ref } from "vue";
+import gsap from "gsap";
+
+const showText = ref(false);
+
+onMounted(() => {
+  const path = document.querySelector("#heartPath");
+  const pathLength = path.getTotalLength();
+
+  gsap.fromTo(
+    path,
+    { strokeDasharray: pathLength, strokeDashoffset: pathLength, opacity: 0.5 },
+    {
+      strokeDashoffset: 0,
+      opacity: 1,
+      duration: 3,
+      ease: "power2.out",
+      onComplete: () => {
+        showText.value = true;
+        gsap.fromTo("#popupText",
+          { opacity: 0, scale: 0.5, rotate: -10 },
+          { opacity: 1, scale: 1.2, rotate: 0, duration: 1.2, ease: "elastic.out(1, 0.5)" }
+        );
+      }
+    }
+  );
+});
+</script>
+
 <template>
-  <!-- <div id="app">
-    <v-card height="500px"
-      ><vue-particles
-        id="tsparticles"
-        url="http://foo.bar/particles.json"
-        @particles-loaded="particlesLoaded" />
-
-      <vue-particles id="tsparticles" :options="dynamicOptions" @particles-loaded="particlesLoaded"
-    /></v-card>
-  </div> -->
-
-  <!-- https://vuetifyjs.com/en/components/sheets/#color -->
-
-  <v-container class="bg-info mt-5" fluid>
-    <v-row class="flex-child justify-center">
-      <v-col cols="12" md="4" class="d-flex">
-        <v-row class="ma-n3">
-          <!-- 第一欄 照片-->
-          <v-col v-for="(item, index) in firstColItems" :key="index" cols="3">
-            <v-sheet
-              class="d-flex align-center justify-center"
-              :color="item.type === 'color' ? item.value : ''"
-              height="150"
-            >
-              <template v-if="item.type === 'image'">
-                <v-img :src="item.value" max-width="100%" cover></v-img>
-              </template>
-            </v-sheet>
-          </v-col>
-
-          <v-col v-for="(item, index) in thirdColItems" :key="index" cols="12">
-            <v-sheet
-              class="d-flex align-center justify-center"
-              :color="item.type === 'color' ? item.value : ''"
-              height="400"
-            >
-              <template v-if="item.type === 'image'">
-                <v-img :src="item.value" max-width="100%" cover></v-img>
-              </template>
-            </v-sheet>
-          </v-col>
-        </v-row>
-      </v-col>
-
-      <!-- 第二欄  -->
-      <v-col cols="12" md="4" class="d-flex">
-        <v-row class="ma-n3">
-          <v-col v-for="(item, index) in secondColItems" :key="index" cols="3">
-            <v-sheet
-              class="d-flex align-center justify-center"
-              :color="item.type === 'color' ? item.value : ''"
-              height="150"
-            >
-              <template v-if="item.type === 'image'">
-                <v-img :src="item.value" max-width="100%" cover></v-img>
-              </template>
-            </v-sheet>
-          </v-col>
-
-          <v-col v-for="(item, index) in fourthColItems" :key="index" cols="12">
-            <v-sheet
-              class="d-flex align-center justify-center"
-              :color="item.type === 'color' ? item.value : ''"
-              height="400"
-            >
-              <template v-if="item.type === 'image'">
-                <v-img :src="item.value" max-width="100%" cover></v-img>
-              </template>
-            </v-sheet>
-          </v-col>
-        </v-row>
-      </v-col>
-
-      <v-col cols="12" md="4" class="d-flex ma-n3">
-        <v-col cols="12">
-          <v-sheet class="d-flex" color="bg-blue" height="574">
-            <sheet-footer> #1: (3r x 2c) </sheet-footer>
-          </v-sheet>
-        </v-col>
-      </v-col>
-    </v-row>
-  </v-container>
-
-  <v-container>
-    <v-row class="flex-child text-subtitle-2">
-      <v-col class="d-flex" cols="12" md="4">
-        <v-sheet class="d-flex" color="grey-lighten-3" height="424">
-          <sheet-footer> #1: (3r x 2c) </sheet-footer>
-        </v-sheet>
-      </v-col>
-
-      <v-col class="d-flex" cols="12" md="4">
-        <v-row class="ma-n3">
-          <v-col cols="6">
-            <v-sheet class="d-flex" color="green-lighten-3" height="150">
-              <sheet-footer> #2: (1r x 1c) </sheet-footer>
-            </v-sheet>
-          </v-col>
-
-          <v-col cols="6">
-            <v-sheet class="d-flex" color="yellow-lighten-3" height="150">
-              <sheet-footer> #3: (1r x 1c) </sheet-footer>
-            </v-sheet>
-          </v-col>
-
-          <v-col cols="12">
-            <v-sheet class="d-flex" color="red-lighten-3" height="250">
-              <sheet-footer> #5: (2r x 2c) </sheet-footer>
-            </v-sheet>
-          </v-col>
-        </v-row>
-      </v-col>
-
-      <v-col cols="6" md="2">
-        <v-sheet class="d-flex" color="teal-lighten-3" height="300">
-          <sheet-footer> #4: (2r x 1c) </sheet-footer>
-        </v-sheet>
-      </v-col>
-
-      <v-col class="d-flex" cols="6" md="2">
-        <v-sheet class="d-flex mt-auto" color="purple-lighten-3" height="300">
-          <sheet-footer> #6: (2r x 1c) </sheet-footer>
-        </v-sheet>
-      </v-col>
-    </v-row>
-  </v-container>
-
-  <div class="watercolor-box">
-    <svg class="watercolor-bg" viewBox="0 0 300 200">
+  <div class="container">
+    <svg viewBox="0 0 120 120">
+      <!-- 定義水彩效果 -->
       <defs>
-        <filter id="watercolor">
-          <feTurbulence type="fractalNoise" baseFrequency="0.03" numOctaves="5" />
-          <feDisplacementMap in="SourceGraphic" scale="20" />
+        <!-- 模糊邊緣 -->
+        <filter id="blurFilter">
+          <feGaussianBlur stdDeviation="1.5" />
         </filter>
+
+        <!-- 水彩漸變填充 -->
+        <linearGradient id="watercolorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff758c" stop-opacity="0.9" />
+          <stop offset="100%" stop-color="#ff7eb3" stop-opacity="0.7" />
+        </linearGradient>
+
+        <!-- 文字用的水彩漸變 -->
+        <linearGradient id="textGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff758c" />
+          <stop offset="50%" stop-color="#ff7eb3" />
+          <stop offset="100%" stop-color="#ff92d3" />
+        </linearGradient>
       </defs>
-      <rect width="100%" height="100%" fill="lightblue" filter="url(#watercolor)" />
+
+      <!-- 愛心路徑 -->
+      <path id="heartPath"
+            d="M107.551,55.676c10.765-13.352,9.95-32.948-2.451-45.35
+               c-12.402-12.401-31.607-4.325-44.958,6.44L60,16.625
+               C46.722,3.347,24.804-5.544,11.525,7.733c-13.278,13.278-13.278,34.806,0,48.083
+               L59.609,103.9l48.083-48.083L107.551,55.676z"
+            fill="url(#watercolorGradient)"
+            stroke="#e63946" stroke-width="2" stroke-linecap="round"
+            filter="url(#blurFilter)"
+            stroke-dasharray="4,2" />
+
     </svg>
-    <p class="watermark">Watermark</p>
+
+    <!-- 彈出 "Oshipalette" 文字 -->
+    <div v-if="showText" id="popupText" class="popup-text">Oshipalette</div>
   </div>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue'
-import { useAxios } from '@/composables/axios'
-
-const { api } = useAxios()
-const posts = ref([])
-
-const getPosts = async () => {
-  try {
-    const { data } = await api.get('/post/random')
-    posts.value.push(...data.result)
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-getPosts()
-console.log(posts.value[0])
-
-const colors = ['#ffa6a6', '#f9a8d4', '#decfff', '#cff9ff', '#b9ffb3', '#fffcaf', '#ffbf95']
-
-// 隨機生成 items 陣列
-// const items = computed(() => {
-//   if (posts.value.length > 0) {
-//     const images = posts.value.map((post) => post.image)
-//     const usedColors = new Set()
-//     const usedImages = new Set()
-//     const generatedItems = []
-//     for (let i = 0; i < 4; i++) {
-//       const isImage = Math.random() > 0.5 // 50% 機率
-//       if (isImage) {
-//         let randomImage
-//         do {
-//           randomImage = images[Math.floor(Math.random() * images.length)]
-//         } while (usedImages.has(randomImage))
-//         usedImages.add(randomImage)
-//         generatedItems.push({
-//           type: 'image',
-//           value: randomImage,
-//         })
-//       } else {
-//         let randomColor
-//         do {
-//           randomColor = colors[Math.floor(Math.random() * colors.length)]
-//         } while (usedColors.has(randomColor))
-//         usedColors.add(randomColor)
-//         generatedItems.push({
-//           type: 'color',
-//           value: randomColor,
-//         })
-//       }
-//     }
-//     return generatedItems
-//   } else {
-//     return []
-//   }
-// })
-
-// 隨機生成 items 陣列
-const generateItems = (count, usedImages) => {
-  const images = posts.value.map((post) => post.image)
-  const generatedItems = []
-  for (let i = 0; i < count; i++) {
-    const isImage = Math.random() > 0.2 // 50% 機率
-    if (isImage && images.length > usedImages.size) {
-      let randomImage
-      do {
-        randomImage = images[Math.floor(Math.random() * images.length)]
-      } while (usedImages.has(randomImage))
-      usedImages.add(randomImage)
-      generatedItems.push({
-        type: 'image',
-        value: randomImage,
-      })
-    } else {
-      const randomColor = colors[Math.floor(Math.random() * colors.length)]
-      generatedItems.push({
-        type: 'color',
-        value: randomColor,
-      })
-    }
-  }
-  return generatedItems
-}
-
-const usedImages = new Set()
-
-const firstColItems = computed(() => generateItems(4, usedImages))
-const secondColItems = computed(() => generateItems(4, usedImages))
-const thirdColItems = computed(() => generateItems(1, usedImages))
-const fourthColItems = computed(() => generateItems(1, usedImages))
-
-// const items = computed(() => {
-//   if (posts.value.length > 0) {
-//     return [
-//       {
-//         type: 'image',
-//         value: posts.value[0].image, // 正確存取 posts 的第一個元素
-//         label: '#1: (3r x 2c)',
-//       },
-//       { type: 'color', value: 'green-lighten-3', label: '#2: (1r x 1c)' },
-//       { type: 'color', value: 'yellow-lighten-3', label: '#3: (1r x 1c)' },
-//       { type: 'color', value: 'purple-lighten-3', label: '#4: (1r x 1c)' },
-//     ]
-//   } else {
-//     return []
-//   }
-// })
-</script>
-
 <style scoped>
-.watercolor-box {
-  width: 300px;
-  height: 200px;
-  position: relative;
+.container {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #fffaf0;
+  position: relative;
 }
 
-.watercolor-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+svg {
+  width: 50vw;
+  height: 50vh;
 }
 
-.watermark {
-  font-size: 24px;
+/* 彈出的文字樣式 */
+.popup-text {
+  font-size: 28px;
   font-weight: bold;
-  color: rgba(0, 0, 0, 0.3);
-  mix-blend-mode: multiply;
+  font-family: "Dancing Script", cursive;
+  color: transparent;
+  background-image: linear-gradient(45deg, #ff758c, #ff7eb3, #ff92d3);
+  background-clip: text;
   position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
 }
 </style>
