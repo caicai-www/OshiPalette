@@ -12,7 +12,7 @@
       :modules="modules"
       :autoplay="{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: true }"
       loop
-      class="mySwiper2"
+      class="mySwiper2 my-2"
     >
       <swiper-slide v-for="event in latestEvents" :key="event.id">
         <img :src="event.image" class="event-image" @click="onEventClick(event)" />
@@ -139,7 +139,7 @@ onMounted(() => {
 } */
 
 .mySwiper2 {
-  height: 800px;
+  height: 600px;
   width: 100%;
 }
 

@@ -8,7 +8,7 @@
         @particles-loaded="particlesLoaded"
       />
       <v-row>
-        <v-col cols="12" md="7"> </v-col>
+        <v-col cols="6"> </v-col>
         <v-col cols="12" md="5" class="my-0" style="position: relative; z-index: 1">
           <h1 class="text-center">註冊</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
@@ -60,6 +60,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useThemeStore } from '@/stores/style'
 import { useForm, useField } from 'vee-validate'
 import validator from 'validator'
@@ -130,6 +131,18 @@ const submit = handleSubmit(async (values) => {
 const toLogin = () => {
   router.push('/login')
 }
+
+// 判斷是不是mobile
+const isMobile = ref(false)
+
+const checkIsMobile = () => {
+  isMobile.value = window.innerWidth < 800
+}
+
+onMounted(() => {
+  checkIsMobile()
+  window.addEventListener('resize', checkIsMobile)
+})
 </script>
 
 <style scoped>

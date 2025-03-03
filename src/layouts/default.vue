@@ -2,9 +2,17 @@
   <v-toolbar density="comfortable">
     <v-container fluid class="d-flex align-center bg">
       <v-btn to="/" :active="false">Oshi Palette</v-btn>
-      <v-btn v-for="nav of navs" :key="nav.to" :to="nav.to" :prepend-icon="nav.icon">
-        {{ nav.text }}
-      </v-btn>
+      <template v-if="!isMobile">
+        <v-btn v-for="nav of navs" :key="nav.to" :to="nav.to" :prepend-icon="nav.icon">
+          {{ nav.text }}
+        </v-btn>
+      </template>
+
+      <!-- 手機板只顯示icon -->
+      <template v-else>
+        <v-btn v-for="nav of navs" :key="nav.to" :to="nav.to" :prepend-icon="nav.icon"> </v-btn>
+      </template>
+
       <v-spacer />
       <v-menu>
         <template #activator="{ props }">
@@ -30,7 +38,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
 import { useAxios } from '@/composables/axios'
 import { useSnackbar } from 'vuetify-use-dialog'
@@ -42,7 +50,7 @@ const createSnackbar = useSnackbar()
 const navs = computed(() => {
   return [
     { to: '/event', text: '活動月曆', icon: ' mdi-calendar-month' },
-      { to: '/photo', text: '照片牆', icon: ' mdi-image-album' },
+    { to: '/photo', text: '照片牆', icon: ' mdi-image-album' },
   ]
 })
 
@@ -74,6 +82,18 @@ const logout = async () => {
     },
   })
 }
+
+// 判斷是不是mobile
+const isMobile = ref(false)
+
+const checkIsMobile = () => {
+  isMobile.value = window.innerWidth < 600
+}
+
+onMounted(() => {
+  checkIsMobile()
+  window.addEventListener('resize', checkIsMobile)
+})
 </script>
 
 <style>

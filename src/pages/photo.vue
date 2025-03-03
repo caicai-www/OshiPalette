@@ -1,8 +1,30 @@
 <template>
   <v-container>
-    <v-banner class="bg-info mb-5" height="450px">BANNER什麼時候會做好呢</v-banner>
+    <swiper
+      :slides-per-view="'auto'"
+      :space-between="50"
+      :pagination="{
+        clickable: true,
+      }"
+      :autoplay="{
+        delay: 2500,
+        disableOnInteraction: false,
+      }"
+      :modules="modules"
+      class="mySwiper py-10"
+    >
+      <swiper-slide v-for="post in swiperPosts" :key="post._id">
+        <img :src="post.image" cover height="100%" />
+      </swiper-slide>
+    </swiper>
+
     <v-divider></v-divider>
-    <color-option @color-selected="filterPostsByColor"></color-option>
+    <v-row>
+      <v-col class="d-flex justify-center" cols="12">
+        <color-option @color-selected="filterPostsByColor"></color-option>
+      </v-col>
+    </v-row>
+
     <v-divider></v-divider>
 
     <v-row class="mt-5 justify-center">
@@ -25,6 +47,13 @@ import { ref } from 'vue'
 import { useAxios } from '@/composables/axios'
 import PostCard from '@/components/PostCard.vue'
 import ColorOption from '@/components/ColorOption.vue'
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import 'swiper/css'
+import 'swiper/css/pagination'
+
+import { Autoplay, Pagination } from 'swiper/modules'
+
+const modules = [Autoplay, Pagination]
 
 const { api } = useAxios()
 const posts = ref([])
@@ -35,6 +64,7 @@ const getPost = async () => {
     const { data } = await api.get('/post/all')
     posts.value.push(...data.result)
     filteredPosts.value.push(...data.result)
+    swiperPosts.value = getRandomPosts(posts.value)
     console.log(data.result)
   } catch (error) {
     console.log('pages.photo.getPost', error)
@@ -57,9 +87,45 @@ const filterPostsByColor = (color) => {
   }
   // console.log('過濾後的貼文:', filteredPosts.value) // 檢查過濾後的結果
 }
+
+const swiperPosts = ref([])
+
+const getRandomPosts = (posts) => {
+  const shuffledPosts = []
+  while (shuffledPosts.length < 10 && posts.length > 0) {
+    const randomIndex = Math.floor(Math.random() * posts.length)
+    const randomPost = posts[randomIndex]
+
+    // 確保不會重複選擇同一篇
+    if (!shuffledPosts.includes(randomPost)) {
+      shuffledPosts.push(randomPost)
+    }
+  }
+  return shuffledPosts
+}
 </script>
 
-<style scoped></style>
+<style scoped>
+.swiper {
+  width: 100%;
+  height: 500px; /* 可以根據需求調整 */
+}
+
+.swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: auto; /* 根據圖片的大小自動調整寬度 */
+}
+
+.swiper-slide img {
+  display: block;
+  height: 100%; /* 保證圖片會根據容器的寬度縮放 */
+  width: auto; /* 保持圖片的比例 */
+  object-fit: cover; /* 讓圖片以適合的方式顯示 */
+}
+</style>
 
 <route lang="yaml">
 meta:

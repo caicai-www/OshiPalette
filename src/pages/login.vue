@@ -8,7 +8,7 @@
         @particles-loaded="particlesLoaded"
       />
       <v-row>
-        <v-col cols="6" style="position: relative; z-index: 1">
+        <v-col cols="12" md="5" style="position: relative; z-index: 1">
           <h1 class="text-center">登入</h1>
           <v-form :disabled="isSubmitting" @submit.prevent="submit">
             <v-text-field
