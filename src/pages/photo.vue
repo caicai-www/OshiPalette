@@ -103,7 +103,7 @@ const swiperPosts = ref([])
 
 const getRandomPosts = (posts) => {
   const shuffledPosts = []
-  while (shuffledPosts.length < 10 && posts.length > 0) {
+  while (shuffledPosts.length < 30 && posts.length > 0) {
     const randomIndex = Math.floor(Math.random() * posts.length)
     const randomPost = posts[randomIndex]
 

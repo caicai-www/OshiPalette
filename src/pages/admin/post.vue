@@ -6,7 +6,13 @@
       </v-col>
       <v-divider></v-divider>
       <v-col cols="12">
-        <v-data-table :items="posts" :headers="headers" class="glass-card pa-4" :search="search">
+        <v-data-table
+          :items="posts"
+          :headers="headers"
+          class="glass-card pa-4"
+          :search="search"
+          items-per-page="50"
+        >
           <template #top>
             <v-toolbar class="glass-card">
               <v-text-field
@@ -117,7 +123,7 @@ const headers = computed(() => {
 
 const getPost = async () => {
   try {
-    const { data } = await apiAuth.get('/post')
+    const { data } = await apiAuth.get('/post/all')
     posts.push(...data.result)
   } catch (error) {
     console.log('pages.admin.post:', error)
