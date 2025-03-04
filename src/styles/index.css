@@ -15,7 +15,7 @@ body {
   background: url('@/assets/navi_bg.png') center center;
 }
 
-.list_bg {
+.v-list-item.list_bg {
   background: url('@/assets/list.jpg'),
     linear-gradient(55deg, hsl(0, 100%, 83%), #f9a8d4, #decfff, #cff9ff, #b9ffb3, #fffcaf, #ffbf95);
   background-position: center;

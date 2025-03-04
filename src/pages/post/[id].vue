@@ -273,5 +273,5 @@ const toggleFavorites = async () => {
 meta:
   login: false
   admin: false
-  title:
+  title: '貼文'
 </route>

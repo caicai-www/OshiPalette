@@ -481,3 +481,10 @@ const onImageLoad = (event) => {
   max-width: 100%;
 }
 </style>
+
+<route lang="yaml">
+meta:
+  login: false
+  admin: false
+  title: '活動'
+</route>
