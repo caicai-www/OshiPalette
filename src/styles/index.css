@@ -27,7 +27,7 @@ body {
   mask-size: cover;
 }
 
-v-table.glass-card {
+.v-table.glass-card {
   background: rgba(207, 207, 207, 0.2);
   backdrop-filter: hue-rotate(80deg) saturate(-20%);
   border-radius: 30px;
@@ -35,7 +35,7 @@ v-table.glass-card {
   box-shadow: 0px 20px 15px rgba(0, 0, 0, 0.1);
 }
 
-v-toolbar.glass-card {
+.v-toolbar.glass-card {
   background: rgba(207, 207, 207, 0.2);
   backdrop-filter: hue-rotate(80deg) saturate(-20%);
   border-radius: 30px;
