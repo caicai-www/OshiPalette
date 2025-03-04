@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row class="justify-center">
-      <v-col cols="12" md="10">
+      <v-col cols="12" md="10" class="my-10">
         <vue-cal
           style="height: 1000px"
           :time="false"

@@ -27,7 +27,7 @@
 
     <v-divider></v-divider>
     <!--- 瀑布流布局 使用 CSS Grid -->
-    <div class="column-layout mt-10">
+    <div class="column-layout mt-10 pa-5">
       <post-card
         v-for="post in filteredPosts"
         v-show="post.display"

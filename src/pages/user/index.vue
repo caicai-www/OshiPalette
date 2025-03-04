@@ -154,7 +154,7 @@ const submit = handleSubmit(async (values) => {
     createSnackbar({
       text: '沒有新的更新內容',
       snackbarProps: {
-        color: 'blue',
+        color: 'light-blue-darken-3',
       },
     })
     return
@@ -178,7 +178,7 @@ const submit = handleSubmit(async (values) => {
     createSnackbar({
       text: '更新成功',
       snackbarProps: {
-        color: 'green',
+        color: 'green-darken-1',
       },
     })
   } catch (error) {

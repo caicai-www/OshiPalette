@@ -3,10 +3,13 @@
     <!-- 活動資訊區 -->
     <v-card class="glass-card">
       <v-row>
-        <v-col cols="12" md="7" class="d-flex justify-center align-start">
-          <img :src="calendar.image" class="img" @load="onImageLoad" />
+        <v-col v-if="isPortrait" cols="12" md="5" class="d-flex align-start">
+          <img :src="calendar.image" class="img ms-10" @load="onImageLoad" />
         </v-col>
-        <v-col cols="12" md="5">
+        <v-col v-if="!isPortrait" cols="12" md="7" class="d-flex align-start">
+          <img :src="calendar.image" class="img ms-10" @load="onImageLoad" />
+        </v-col>
+        <v-col cols="12" md="4" class="ms-5">
           <v-card-item>
             <h3>{{ calendar.title }}</h3>
             <v-card-text>
@@ -427,7 +430,7 @@ const toggleEvent = async () => {
     createSnackbar({
       text: isJoin.value ? '已將活動加進我的行事曆' : '已取消參加活動',
       snackbarProps: {
-        color: 'info',
+        color: 'light-blue-darken-3',
       },
     })
 

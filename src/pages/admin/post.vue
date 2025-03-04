@@ -159,7 +159,7 @@ const submit = handleSubmit(async (values) => {
     createSnackbar({
       text: '編輯顯示狀態成功',
       snackbarProps: {
-        color: 'blue',
+        color: 'light-blue-darken-3',
       },
     })
   } catch (error) {

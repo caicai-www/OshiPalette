@@ -404,7 +404,7 @@ const submit = handleSubmit(async (values) => {
     createSnackbar({
       text: '成功新增貼文',
       snackbarProps: {
-        color: 'green',
+        color: 'green-darken-1',
       },
     })
 

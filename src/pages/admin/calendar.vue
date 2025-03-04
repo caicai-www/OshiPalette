@@ -252,7 +252,7 @@ const submit = handleSubmit(async (values) => {
     createSnackbar({
       text: dialog.value.id.length > 0 ? '新增成功' : '編輯成功',
       snackbarProps: {
-        color: 'blue',
+        color: 'light-blue-darken-3',
       },
     })
   } catch (error) {

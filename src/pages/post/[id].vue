@@ -162,7 +162,7 @@ const submit = handleSubmit(async (values) => {
     createSnackbar({
       text: '回覆成功',
       snackbarProps: {
-        color: 'green',
+        color: 'green-darken-1',
       },
     })
     getReply()
@@ -254,7 +254,7 @@ const toggleFavorites = async () => {
     createSnackbar({
       text: isFavorite.value ? '收藏成功' : '已從我的收藏移除',
       snackbarProps: {
-        color: 'info',
+        color: 'light-blue-darken-3',
       },
     })
   } catch (error) {
