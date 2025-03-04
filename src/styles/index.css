@@ -11,7 +11,7 @@ body {
   background-blend-mode: hard-light;
 }
 
-.navi_bg {
+.v-navigation-drawer.navi_bg {
   background: url('@/assets/navi_bg.png') center center;
 }
 

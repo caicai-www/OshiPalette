@@ -1,6 +1,6 @@
 <template>
   <router-link :to="'/post/' + _id" class="text-decoration-none">
-    <v-card :class="['mx-auto', 'polaroid', colors]" height="100%">
+    <v-card :class="['polaroid', colors, 'column-item']">
       <v-img :src="image" cover class="mx-5 mt-7 mb-2 photo"></v-img>
       <v-card-title>{{ title }}</v-card-title>
       <v-chip v-for="tag in tags" :key="tag" class="ma-2" size="s">{{ tag }}</v-chip>
@@ -81,9 +81,13 @@ defineProps({
 }
 
 .black {
-  box-shadow: 0px 0px 15px 6px #33333360;
+  box-shadow: 0px 0px 15px 6px #33333370;
 }
 
+.column-item {
+  width: 100%; /* 確保每個項目佔滿 Masonry 的列寬 */
+  margin-bottom: 50px; /* 控制每個卡片的底部間距 */
+}
 .text-decoration-none {
   text-decoration: none;
 }

@@ -11,7 +11,7 @@
         disableOnInteraction: false,
       }"
       :modules="modules"
-      class="mySwiper py-10"
+      class="mySwiper py-10 mt-5 mb-10"
     >
       <swiper-slide v-for="post in swiperPosts" :key="post._id">
         <img :src="post.image" cover height="100%" />
@@ -26,8 +26,18 @@
     </v-row>
 
     <v-divider></v-divider>
+    <!--- 瀑布流布局 使用 CSS Grid -->
+    <div class="column-layout mt-10">
+      <post-card
+        v-for="post in filteredPosts"
+        v-show="post.display"
+        :key="post._id"
+        v-bind="post"
+        class="column-item"
+      />
+    </div>
 
-    <v-row class="mt-5 justify-center">
+    <!-- <v-row class="mt-5 justify-center">
       <v-col
         v-for="post in filteredPosts"
         v-show="post.display"
@@ -38,15 +48,16 @@
       >
         <post-card v-bind="post"></post-card>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useAxios } from '@/composables/axios'
-import PostCard from '@/components/PostCard.vue'
+import PostCard from '@/components/PostCardMasonry.vue'
 import ColorOption from '@/components/ColorOption.vue'
+
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -124,6 +135,50 @@ const getRandomPosts = (posts) => {
   height: 100%; /* 保證圖片會根據容器的寬度縮放 */
   width: auto; /* 保持圖片的比例 */
   object-fit: cover; /* 讓圖片以適合的方式顯示 */
+}
+
+/* 確保容器的寬度設置為100% */
+
+.column-layout {
+  column-count: 5; /* 設為3列 */
+  column-gap: 50px; /* 設置列與列之間的間距 */
+  width: 100%;
+  overflow: hidden; /* 確保子項目不會溢出容器 */
+}
+
+.column-item {
+  break-inside: avoid; /* 防止元素在列中间被分割 */
+  margin-bottom: 30px;
+  min-height: 300px;
+}
+
+.column-layout::after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+@media (max-width: 1800px) {
+  .column-layout {
+    column-count: 4;
+  }
+}
+@media (max-width: 1280px) {
+  .column-layout {
+    column-count: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .column-layout {
+    column-count: 2;
+  }
+}
+
+@media (max-width: 480px) {
+  .column-layout {
+    column-count: 1;
+  }
 }
 </style>
 
