@@ -6,7 +6,13 @@
       </v-col>
       <v-divider></v-divider>
       <v-col cols="12">
-        <v-data-table class="glass-card pa-4" :items="calendar" :headers="headers" :search="search">
+        <v-data-table
+          class="glass-card pa-4"
+          :items="calendar"
+          :headers="headers"
+          :search="search"
+          items-per-page="20"
+        >
           <template #top>
             <v-toolbar class="glass-card">
               <v-btn class="button rounded-xl" @click="openDialog(null)">新增活動</v-btn>
