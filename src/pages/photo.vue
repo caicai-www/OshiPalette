@@ -11,10 +11,12 @@
         disableOnInteraction: false,
       }"
       :modules="modules"
+       :mousewheel="true"
+       :grab-cursor="true"
       class="mySwiper py-10 mt-5 mb-10"
     >
-      <swiper-slide v-for="post in swiperPosts" :key="post._id">
-        <img :src="post.image" cover height="100%" />
+      <swiper-slide v-for="post in swiperPosts" :key="post._id" >
+        <img :src="post.image" cover height="100%"  @click="onEventClick(post)"/>
       </swiper-slide>
     </swiper>
 
@@ -57,14 +59,16 @@ import { ref } from 'vue'
 import { useAxios } from '@/composables/axios'
 import PostCard from '@/components/PostCardMasonry.vue'
 import ColorOption from '@/components/ColorOption.vue'
+import { useRouter } from 'vue-router'
 
 import { Swiper, SwiperSlide } from 'swiper/vue'
 import 'swiper/css'
 import 'swiper/css/pagination'
 
-import { Autoplay, Pagination } from 'swiper/modules'
+import { Autoplay, Pagination,Mousewheel } from 'swiper/modules'
 
-const modules = [Autoplay, Pagination]
+const modules = [Autoplay, Pagination,Mousewheel ]
+const router = useRouter()
 
 const { api } = useAxios()
 const posts = ref([])
@@ -103,7 +107,7 @@ const swiperPosts = ref([])
 
 const getRandomPosts = (posts) => {
   const shuffledPosts = []
-  while (shuffledPosts.length < 30 && posts.length > 0) {
+  while (shuffledPosts.length < 12 && posts.length > 0) {
     const randomIndex = Math.floor(Math.random() * posts.length)
     const randomPost = posts[randomIndex]
 
@@ -113,6 +117,12 @@ const getRandomPosts = (posts) => {
     }
   }
   return shuffledPosts
+}
+
+// 輪播圖點擊事件
+const onEventClick = (post) => {
+  // console.log('活動ID', event)
+  router.push('/post/' + post._id)
 }
 </script>
 

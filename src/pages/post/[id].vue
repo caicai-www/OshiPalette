@@ -51,7 +51,7 @@
 
                 <v-list-item-content>
                   <v-list-item-subtitle>{{ reply.user.name }}</v-list-item-subtitle>
-                  <v-list-item-title>{{ reply.content }}</v-list-item-title>
+                  <p class="description">{{ reply.content }}</p>
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -268,6 +268,12 @@ const toggleFavorites = async () => {
   }
 }
 </script>
+
+<style scoped>
+.description {
+  white-space: pre-wrap;
+}
+</style>
 
 <route lang="yaml">
 meta:
