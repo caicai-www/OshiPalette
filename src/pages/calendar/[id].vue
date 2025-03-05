@@ -91,7 +91,12 @@
       <v-card class="pa-15 bg rounded-xl">
         <v-row class="glass-card">
           <v-col cols="12" md="3">
-            <v-img :src="TopicDialog.icon" height="100" class="mx-auto rounded-circle"></v-img>
+            <v-img
+              :src="TopicDialog.icon"
+              height="100"
+              width="100"
+              class="mx-auto rounded-circle"
+            ></v-img>
             <p class="text-center">{{ TopicDialog.name }}</p>
           </v-col>
           <v-col cols="12" md="9">
