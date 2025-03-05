@@ -7,7 +7,7 @@
         <v-row>
           <!-- 左側：大頭貼 -->
           <v-col cols="12" md="3">
-            <v-img :src="usericon" max-height="250px" cover></v-img>
+            <v-img :src="usericon" max-height="500px" cover></v-img>
           </v-col>
 
           <!-- 右側：個人資訊 -->

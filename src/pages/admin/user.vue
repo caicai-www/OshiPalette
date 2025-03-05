@@ -184,7 +184,7 @@ const submit = handleSubmit(async (values) => {
     createSnackbar({
       text: '編輯成功',
       snackbarProps: {
-        color: 'blue',
+        color: 'light-blue-darken-3s',
       },
     })
   } catch (error) {

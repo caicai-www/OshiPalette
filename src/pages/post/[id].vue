@@ -12,6 +12,17 @@
             <v-row>
               <v-col cols="12" md="5" class="mt-5">
                 <v-img
+                  v-if="post.author.image === undefined"
+                  color="info"
+                  cover
+                  width="150"
+                  height="150"
+                  class="mx-auto rounded-circle"
+                >
+                  <p class="text-center">尚無頭貼</p>
+                </v-img>
+                <v-img
+                  v-else
                   :src="post.author.image"
                   cover
                   width="150"
