@@ -5,7 +5,7 @@ body {
 }
 
 .bg {
-  background: url('@/assets/bg.jpg'), linear-gradient(130deg, #d4d4d4, #ffdac1);
+  background: linear-gradient(130deg, #d4d4d4, #ffdac1), url('@/assets/bg.jpg');
   background-position: center;
   background-repeat: repeat;
   background-blend-mode: hard-light;
@@ -79,6 +79,7 @@ body {
   background: rgba(255, 182, 182, 0.2);
   backdrop-filter: hue-rotate(20deg);
 }
+
 /* vue-cal */
 /* .vuecal {
   background: rgba(207, 207, 207, 0.3);
@@ -103,13 +104,17 @@ body {
 }
 
 .vuecal__event-title {
-  overflow: hidden; /* 超出範圍的部分隱藏 */
-  text-overflow: ellipsis; /* 使用省略號顯示超出部分 */
-  max-height: 2.3rem; /* 讓標題區域可以自適應大小 */
+  overflow: hidden;
+  /* 超出範圍的部分隱藏 */
+  text-overflow: ellipsis;
+  /* 使用省略號顯示超出部分 */
+  max-height: 2.3rem;
+  /* 讓標題區域可以自適應大小 */
 }
 
 .vuecal__cell {
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* 輕微陰影 */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  /* 輕微陰影 */
 }
 
 /* .vuecal__cell:hover {

@@ -127,6 +127,11 @@ const onEventClick = (post) => {
 </script>
 
 <style scoped>
+/* 讓手機板正常顯示背景 */
+v-container {
+  background: transparent !important;
+}
+
 .swiper {
   width: 100%;
   height: 500px; /* 可以根據需求調整 */
